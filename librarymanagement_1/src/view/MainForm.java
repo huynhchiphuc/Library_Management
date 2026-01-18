@@ -4,17 +4,23 @@
  */
 package view;
 
+import controller.MainController;
+
 /**
  *
  * @author ASUS
  */
 public class MainForm extends javax.swing.JFrame {
 
+    private MainController controller;
+
     /**
      * Creates new form MainForm
      */
     public MainForm() {
         initComponents();
+        controller = new MainController(this);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -26,21 +32,165 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnHome = new javax.swing.JButton();
+        btnPenalty = new javax.swing.JButton();
+        btnReader = new javax.swing.JButton();
+        btnReport = new javax.swing.JButton();
+        btnBook = new javax.swing.JButton();
+        btnBorrow = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
+        lblUserInfo = new javax.swing.JLabel();
+        pnlDesktop = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnHome.setText("Trang chủ");
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
+
+        btnPenalty.setText("Phạt");
+        btnPenalty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPenaltyActionPerformed(evt);
+            }
+        });
+
+        btnReader.setText("Bạn đọc");
+        btnReader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReaderActionPerformed(evt);
+            }
+        });
+
+        btnReport.setText("Báo cáo");
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
+
+        btnBook.setText("sách");
+        btnBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBookActionPerformed(evt);
+            }
+        });
+
+        btnBorrow.setText("mượn sách");
+        btnBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrowActionPerformed(evt);
+            }
+        });
+
+        btnLogout.setText("Đăng xuất");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        lblUserInfo.setText("Thông tin user");
+
+        pnlDesktop.setBackground(new java.awt.Color(255, 102, 102));
+
+        jLabel1.setText("jLabel1");
+
+        javax.swing.GroupLayout pnlDesktopLayout = new javax.swing.GroupLayout(pnlDesktop);
+        pnlDesktop.setLayout(pnlDesktopLayout);
+        pnlDesktopLayout.setHorizontalGroup(
+            pnlDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDesktopLayout.createSequentialGroup()
+                .addGap(270, 270, 270)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlDesktopLayout.setVerticalGroup(
+            pnlDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDesktopLayout.createSequentialGroup()
+                .addGap(139, 139, 139)
+                .addComponent(jLabel1)
+                .addContainerGap(151, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblUserInfo)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnHome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReader)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPenalty)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBook)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBorrow)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLogout))
+                    .addComponent(pnlDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnHome)
+                    .addComponent(btnReader)
+                    .addComponent(btnPenalty)
+                    .addComponent(btnBook)
+                    .addComponent(btnBorrow)
+                    .addComponent(btnReport)
+                    .addComponent(btnLogout))
+                .addGap(18, 18, 18)
+                .addComponent(lblUserInfo)
+                .addGap(18, 18, 18)
+                .addComponent(pnlDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHomeActionPerformed
+
+    private void btnReaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReaderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReaderActionPerformed
+
+    private void btnPenaltyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPenaltyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPenaltyActionPerformed
+
+    private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBookActionPerformed
+
+    private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBorrowActionPerformed
+
+    private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +228,57 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBook;
+    private javax.swing.JButton btnBorrow;
+    private javax.swing.JButton btnHome;
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnPenalty;
+    private javax.swing.JButton btnReader;
+    private javax.swing.JButton btnReport;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblUserInfo;
+    private javax.swing.JPanel pnlDesktop;
     // End of variables declaration//GEN-END:variables
+    
+    // C�c Getter n�y b? comment d? ch?y du?c Design View.
+    // Sau khi thi?t k? giao di?n xong (drag-drop c�c n�t Menu...), b?n h�y d?i t�n bi?n (Change Variable Name)
+    // cho c�c n�t b?m gi?ng nhu b�n du?i (btnBook, btnReader...), r?i uncomment do?n code n�y.
+    
+    
+    public javax.swing.JButton getBtnBook() {
+        return btnBook;
+    }
+
+    public javax.swing.JButton getBtnBorrow() {
+        return btnBorrow;
+    }
+
+    public javax.swing.JButton getBtnHome() {
+        return btnHome;
+    }
+
+    public javax.swing.JButton getBtnLogout() {
+        return btnLogout;
+    }
+
+    public javax.swing.JButton getBtnPenalty() {
+        return btnPenalty;
+    }
+
+    public javax.swing.JButton getBtnReader() {
+        return btnReader;
+    }
+
+    public javax.swing.JButton getBtnReport() {
+        return btnReport;
+    }
+
+    public javax.swing.JLabel getLblUserInfo() {
+        return lblUserInfo;
+    }
+    
+    public javax.swing.JPanel getPnlDesktop() {
+        return pnlDesktop;
+    }
+    
 }

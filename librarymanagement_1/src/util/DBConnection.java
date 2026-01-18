@@ -25,12 +25,12 @@ public class DBConnection {
     private static final String DB_NAME = "quanlythuvien";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
-    private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
     
     // Connection string cho MySQL
     private static final String DB_URL = "jdbc:mysql://" + DB_SERVER + ":" + DB_PORT 
             + "/" + DB_NAME 
-            + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+            + "?useSSL=false&useUnicode=true&characterEncoding=UTF-8";
     
     // Singleton instance
     private static DBConnection instance;

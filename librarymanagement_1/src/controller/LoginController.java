@@ -25,11 +25,14 @@ public class LoginController {
     }
     
     private void initController() {
+        
         view.getBtnLogin().addActionListener(e -> login());
         view.getBtnExit().addActionListener(e -> System.exit(0));
+        
     }
     
     private void login() {
+        
         String username = view.getTxtUsername().getText();
         String password = new String(view.getTxtPassword().getPassword());
         
@@ -48,5 +51,14 @@ public class LoginController {
         } else {
             JOptionPane.showMessageDialog(view, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
+        
+        
+        // Code Demo tạm thời cho phép đăng nhập luôn
+         java.awt.EventQueue.invokeLater(() -> {
+            new MainForm().setVisible(true);
+        });
+        view.dispose();
     }
+    
+    // Sau khi bạn thiết kế giao diện bên NetBeans và Uncomment các hàm Getter trong View, hãy Uncomment đoạn code trên để logic hoạt động.
 }

@@ -4,10 +4,136 @@
  */
 package dao;
 
-/**
- *
- * @author ASUS
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import model.Book;
+import util.DBConnection;
+
 public class BookDAO {
     
+    public List<Book> getAllBooks() {
+        List<Book> list = new ArrayList<>();
+        // Join with TheLoai and CuonSach to get aggregated data
+        String sql = "SELECT b.*, c.TenTheLoai, COUNT(cs.MaCuonSach) as SoLuong, MAX(cs.GiaTien) as GiaTien " +
+                     "FROM DauSach b " +
+                     "LEFT JOIN TheLoai c ON b.MaTheLoai = c.MaTheLoai " +
+                     "LEFT JOIN CuonSach cs ON b.MaDauSach = cs.MaDauSach " +
+                     "GROUP BY b.MaDauSach, b.TuaDe, b.TacGia, b.NhaXuatBan, b.NamXuatBan, b.MaTheLoai, b.HinhAnh, b.MoTa, c.TenTheLoai";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                Book b = new Book();
+                b.setId(rs.getInt("MaDauSach"));
+                b.setTitle(rs.getString("TuaDe"));
+                b.setAuthor(rs.getString("TacGia"));
+                b.setPublisher(rs.getString("NhaXuatBan"));
+                b.setPublishYear(rs.getInt("NamXuatBan"));
+                b.setCategoryId(rs.getInt("MaTheLoai"));
+                b.setImage(rs.getString("HinhAnh"));
+                b.setDescription(rs.getString("MoTa"));
+                b.setCategoryName(rs.getString("TenTheLoai"));
+                b.setQuantity(rs.getInt("SoLuong"));
+                b.setPrice(rs.getDouble("GiaTien"));
+                list.add(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean insertBook(Book b) {
+        String sql = "INSERT INTO DauSach(TuaDe, TacGia, NhaXuatBan, NamXuatBan, MaTheLoai, MoTa) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, b.getTitle());
+            ps.setString(2, b.getAuthor());
+            ps.setString(3, b.getPublisher());
+            ps.setInt(4, b.getPublishYear());
+            ps.setInt(5, b.getCategoryId());
+            ps.setString(6, b.getDescription());
+            
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateBook(Book b) {
+        String sql = "UPDATE DauSach SET TuaDe=?, TacGia=?, NhaXuatBan=?, NamXuatBan=?, MaTheLoai=?, MoTa=? WHERE MaDauSach=?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, b.getTitle());
+            ps.setString(2, b.getAuthor());
+            ps.setString(3, b.getPublisher());
+            ps.setInt(4, b.getPublishYear());
+            ps.setInt(5, b.getCategoryId());
+            ps.setString(6, b.getDescription());
+            ps.setInt(7, b.getId());
+            
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteBook(int id) {
+        String sql = "DELETE FROM DauSach WHERE MaDauSach=?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public List<Book> searchBooks(String keyword) {
+        List<Book> list = new ArrayList<>();
+        String sql = "SELECT b.*, c.TenTheLoai, COUNT(cs.MaCuonSach) as SoLuong, MAX(cs.GiaTien) as GiaTien " +
+                     "FROM DauSach b " +
+                     "LEFT JOIN TheLoai c ON b.MaTheLoai = c.MaTheLoai " +
+                     "LEFT JOIN CuonSach cs ON b.MaDauSach = cs.MaDauSach " +
+                     "WHERE b.TuaDe LIKE ? OR b.TacGia LIKE ? OR b.NhaXuatBan LIKE ? " +
+                     "GROUP BY b.MaDauSach, b.TuaDe, b.TacGia, b.NhaXuatBan, b.NamXuatBan, b.MaTheLoai, b.HinhAnh, b.MoTa, c.TenTheLoai";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            String key = "%" + keyword + "%";
+            ps.setString(1, key);
+            ps.setString(2, key);
+            ps.setString(3, key);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Book b = new Book();
+                    b.setId(rs.getInt("MaDauSach"));
+                    b.setTitle(rs.getString("TuaDe"));
+                    b.setAuthor(rs.getString("TacGia"));
+                    b.setPublisher(rs.getString("NhaXuatBan"));
+                    b.setPublishYear(rs.getInt("NamXuatBan"));
+                    b.setCategoryId(rs.getInt("MaTheLoai"));
+                    b.setDescription(rs.getString("MoTa"));
+                    b.setCategoryName(rs.getString("TenTheLoai"));
+                    b.setQuantity(rs.getInt("SoLuong"));
+                    b.setPrice(rs.getDouble("GiaTien"));
+                    list.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
