@@ -4,17 +4,22 @@
  */
 package view;
 
+import controller.PenaltyController;
+
 /**
  *
  * @author ASUS
  */
 public class PenaltyForm extends javax.swing.JPanel {
 
+    private PenaltyController controller;
+
     /**
      * Creates new form PenaltyForm
      */
     public PenaltyForm() {
         initComponents();
+        controller = new PenaltyController(this);
     }
 
     /**
@@ -25,65 +30,177 @@ public class PenaltyForm extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
+        // Init Components
+        javax.swing.JPanel pnlCreate = new javax.swing.JPanel();
+        javax.swing.JPanel pnlList = new javax.swing.JPanel();
+        
+        // Create Panel Components
+        javax.swing.JLabel lblMaThe = new javax.swing.JLabel("Mã thẻ ĐG:");
+        txtMaThe = new javax.swing.JTextField();
+        btnCheckReader = new javax.swing.JButton("Kiểm tra");
+        javax.swing.JLabel lblTenDG = new javax.swing.JLabel("Tên độc giả:");
+        lblTenDocGia = new javax.swing.JLabel("...");
+        javax.swing.JLabel lblLyDo = new javax.swing.JLabel("Lý do phạt:");
+        txtLyDo = new javax.swing.JTextField();
+        javax.swing.JLabel lblSoTien = new javax.swing.JLabel("Số tiền:");
+        txtSoTien = new javax.swing.JTextField();
+        btnAddPenalty = new javax.swing.JButton("TẠO PHIẾU PHẠT");
+        btnAddPenalty.setBackground(new java.awt.Color(231, 76, 60)); // Red
+        btnAddPenalty.setForeground(java.awt.Color.WHITE);
+        
+        // List Panel Components
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane();
+        tblPenalty = new javax.swing.JTable();
+        javax.swing.JPanel pnlActions = new javax.swing.JPanel();
+        btnPay = new javax.swing.JButton("Xác nhận đã đóng tiền");
+        btnRefresh = new javax.swing.JButton("Làm mới");
 
-        jLabel1.setText("jLabel1");
+        // --- LAYOUT ---
+        setLayout(new java.awt.BorderLayout(10, 10));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jLabel1)
-                .addContainerGap(320, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(160, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(124, 124, 124))
-        );
+        // 1. LEFT PANEL - CREATE PENALTY
+        pnlCreate.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tạo phiếu phạt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        pnlCreate.setPreferredSize(new java.awt.Dimension(350, 0));
+        pnlCreate.setLayout(new java.awt.GridBagLayout());
+
+        // Row 0: Ma The
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        pnlCreate.add(lblMaThe, gridBagConstraints);
+
+        txtMaThe.setColumns(10);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlCreate.add(txtMaThe, gridBagConstraints);
+        
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlCreate.add(btnCheckReader, gridBagConstraints);
+
+        // Row 1: Name
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        pnlCreate.add(lblTenDG, gridBagConstraints);
+        
+        lblTenDocGia.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlCreate.add(lblTenDocGia, gridBagConstraints);
+
+        // Row 2: Reason
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        pnlCreate.add(lblLyDo, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlCreate.add(txtLyDo, gridBagConstraints);
+
+        // Row 3: Amount
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        pnlCreate.add(lblSoTien, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlCreate.add(txtSoTien, gridBagConstraints);
+        
+        // Row 4: Button
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(15, 5, 5, 5);
+        pnlCreate.add(btnAddPenalty, gridBagConstraints);
+
+        // Filler
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.weighty = 1.0;
+        pnlCreate.add(new javax.swing.JLabel(), gridBagConstraints);
+
+        add(pnlCreate, java.awt.BorderLayout.WEST);
+
+        // 2. CENTER PANEL - LIST PENALTY
+        pnlList.setLayout(new java.awt.BorderLayout(5, 5));
+        pnlList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách phiếu phạt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+
+        tblPenalty.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "ID", "Độc giả", "Lý do", "Số tiền", "Trạng thái", "Ngày tạo"
+            }
+        ));
+        scrollPane.setViewportView(tblPenalty);
+        pnlList.add(scrollPane, java.awt.BorderLayout.CENTER);
+
+        // Bottom Actions
+        pnlActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        pnlActions.add(btnRefresh);
+        btnPay.setBackground(new java.awt.Color(46, 204, 113));
+        btnPay.setForeground(java.awt.Color.WHITE);
+        pnlActions.add(btnPay);
+        
+        pnlList.add(pnlActions, java.awt.BorderLayout.SOUTH);
+
+        add(pnlList, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PenaltyForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PenaltyForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PenaltyForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PenaltyForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    // Variables
+    private javax.swing.JButton btnAddPenalty;
+    private javax.swing.JButton btnCheckReader;
+    private javax.swing.JButton btnPay;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JLabel lblTenDocGia;
+    private javax.swing.JTable tblPenalty;
+    private javax.swing.JTextField txtLyDo;
+    private javax.swing.JTextField txtMaThe;
+    private javax.swing.JTextField txtSoTien;
+    // End variables
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PenaltyForm().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    // End of variables declaration//GEN-END:variables
+    // Getters
+    public javax.swing.JButton getBtnAddPenalty() { return btnAddPenalty; }
+    public javax.swing.JButton getBtnCheckReader() { return btnCheckReader; }
+    public javax.swing.JButton getBtnPay() { return btnPay; }
+    public javax.swing.JButton getBtnRefresh() { return btnRefresh; }
+    public javax.swing.JLabel getLblTenDocGia() { return lblTenDocGia; }
+    public javax.swing.JTable getTblPenalty() { return tblPenalty; }
+    public javax.swing.JTextField getTxtLyDo() { return txtLyDo; }
+    public javax.swing.JTextField getTxtMaThe() { return txtMaThe; }
+    public javax.swing.JTextField getTxtSoTien() { return txtSoTien; }
 }

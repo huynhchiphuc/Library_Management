@@ -10,11 +10,14 @@ package view;
  */
 public class BorrowForm extends javax.swing.JPanel {
 
+    private controller.BorrowController controller; // Uncomment when controller is ready
+
     /**
      * Creates new form BorrowForm
      */
     public BorrowForm() {
         initComponents();
+        controller = new controller.BorrowController(this);
     }
 
     /**
@@ -25,65 +28,223 @@ public class BorrowForm extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
+        // Init Components
+        javax.swing.JPanel pnlInfo = new javax.swing.JPanel();
+        
+        // Reader Panel
+        javax.swing.JPanel pnlReader = new javax.swing.JPanel();
+        javax.swing.JLabel lblMaThe = new javax.swing.JLabel("Mã độc giả:");
+        txtMaThe = new javax.swing.JTextField();
+        btnCheckReader = new javax.swing.JButton("Kiểm tra");
+        javax.swing.JLabel lblTenDG = new javax.swing.JLabel("Họ tên:");
+        lblTenDocGia = new javax.swing.JLabel("..."); // Dynamic label
+        lblTenDocGia.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblTenDocGia.setForeground(new java.awt.Color(0, 102, 204));
+        
+        // Book Input Panel
+        javax.swing.JPanel pnlBookInput = new javax.swing.JPanel();
+        javax.swing.JLabel lblMaSach = new javax.swing.JLabel("Mã sách:");
+        txtMaSach = new javax.swing.JTextField();
+        btnAddBook = new javax.swing.JButton("Thêm sách");
+        javax.swing.JLabel lblNgayTra = new javax.swing.JLabel("Hạn trả:");
+        txtHanTra = new javax.swing.JTextField(); // Or JDateChooser if available
+        
+        // Action Panel
+        javax.swing.JPanel pnlActions = new javax.swing.JPanel();
+        btnBorrow = new javax.swing.JButton("CHO MƯỢN");
+        btnReturn = new javax.swing.JButton("NHẬN TRẢ");
+        btnReset = new javax.swing.JButton("LÀM MỚI");
+        
+        // Table
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane();
+        tblBorrow = new javax.swing.JTable();
 
-        jLabel1.setText("jLabel1");
+        // --- LAYOUT SETUP ---
+        setLayout(new java.awt.BorderLayout(10, 10));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(167, 167, 167)
-                .addComponent(jLabel1)
-                .addContainerGap(192, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(jLabel1)
-                .addContainerGap(170, Short.MAX_VALUE))
-        );
+        // 1. TOP INFO PANEL (Reader + Book Input)
+        pnlInfo.setLayout(new java.awt.GridLayout(1, 2, 20, 0)); // 2 Columns equal width
+
+        // 1.1 Reader Panel Layout
+        pnlReader.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin độc giả", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        pnlReader.setLayout(new java.awt.GridBagLayout());
+
+        // Row 0: Ma The + Check
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
+        pnlReader.add(lblMaThe, gridBagConstraints);
+
+        txtMaThe.setColumns(12);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlReader.add(txtMaThe, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        pnlReader.add(btnCheckReader, gridBagConstraints);
+
+        // Row 1: Name Display
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
+        pnlReader.add(lblTenDG, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        pnlReader.add(lblTenDocGia, gridBagConstraints);
+        
+        pnlInfo.add(pnlReader);
+
+        // 1.2 Book Input Panel Layout
+        pnlBookInput.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin sách", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        pnlBookInput.setLayout(new java.awt.GridBagLayout());
+
+        // Row 0: Ma Sach + Add
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
+        pnlBookInput.add(lblMaSach, gridBagConstraints);
+
+        txtMaSach.setColumns(12);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        pnlBookInput.add(txtMaSach, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        pnlBookInput.add(btnAddBook, gridBagConstraints);
+
+        // Row 1: Han Tra
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
+        pnlBookInput.add(lblNgayTra, gridBagConstraints);
+
+        txtHanTra.setText("00/00/0000"); // placeholder
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        pnlBookInput.add(txtHanTra, gridBagConstraints);
+
+        pnlInfo.add(pnlBookInput);
+
+        add(pnlInfo, java.awt.BorderLayout.NORTH);
+
+        // 2. CENTER PANEL (Table)
+        scrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách sách chọn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        tblBorrow.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "Mã sách", "Tên sách", "Tác giả", "Giá tiền", "Hạn trả"
+            }
+        ));
+        scrollPane.setViewportView(tblBorrow);
+        add(scrollPane, java.awt.BorderLayout.CENTER);
+
+        // 3. RIGHT/EAST PANEL (Actions)
+        pnlActions.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tác vụ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        pnlActions.setLayout(new java.awt.GridLayout(5, 1, 10, 15));
+        pnlActions.setPreferredSize(new java.awt.Dimension(120, 0));
+
+        btnBorrow.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnBorrow.setBackground(new java.awt.Color(46, 204, 113)); // Green
+        btnBorrow.setForeground(java.awt.Color.WHITE);
+        pnlActions.add(btnBorrow);
+
+        btnReturn.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnReturn.setBackground(new java.awt.Color(52, 152, 219)); // Blue
+        btnReturn.setForeground(java.awt.Color.WHITE);
+        pnlActions.add(btnReturn);
+
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        pnlActions.add(btnReset);
+
+        add(pnlActions, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BorrowForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BorrowForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BorrowForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BorrowForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    // Variables declaration
+    private javax.swing.JButton btnAddBook;
+    private javax.swing.JButton btnBorrow;
+    private javax.swing.JButton btnCheckReader;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnReturn;
+    private javax.swing.JLabel lblTenDocGia;
+    private javax.swing.JTable tblBorrow;
+    private javax.swing.JTextField txtHanTra;
+    private javax.swing.JTextField txtMaSach;
+    private javax.swing.JTextField txtMaThe;
+    // End of variables declaration
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BorrowForm().setVisible(true);
-            }
-        });
+    // --- Getters for Controller ---
+
+    public javax.swing.JButton getBtnAddBook() {
+        return btnAddBook;
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    // End of variables declaration//GEN-END:variables
+    public javax.swing.JButton getBtnBorrow() {
+        return btnBorrow;
+    }
+
+    public javax.swing.JButton getBtnCheckReader() {
+        return btnCheckReader;
+    }
+
+    public javax.swing.JButton getBtnReset() {
+        return btnReset;
+    }
+
+    public javax.swing.JButton getBtnReturn() {
+        return btnReturn;
+    }
+
+    public javax.swing.JLabel getLblTenDocGia() {
+        return lblTenDocGia;
+    }
+
+    public javax.swing.JTable getTblBorrow() {
+        return tblBorrow;
+    }
+
+    public javax.swing.JTextField getTxtHanTra() {
+        return txtHanTra;
+    }
+
+    public javax.swing.JTextField getTxtMaSach() {
+        return txtMaSach;
+    }
+
+    public javax.swing.JTextField getTxtMaThe() {
+        return txtMaThe;
+    }
 }

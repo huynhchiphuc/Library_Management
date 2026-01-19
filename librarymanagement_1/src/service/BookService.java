@@ -4,10 +4,35 @@
  */
 package service;
 
+import dao.BookCopyDAO;
+import dao.BookDAO;
+import java.util.List;
+import model.Book;
+import model.BookCopy;
+
 /**
  *
  * @author ASUS
  */
 public class BookService {
     
+    private BookDAO bookDAO;
+    private BookCopyDAO bookCopyDAO;
+
+    public BookService() {
+        bookDAO = new BookDAO();
+        bookCopyDAO = new BookCopyDAO();
+    }
+    
+    public List<Book> getAllBooks() {
+        return bookDAO.getAllBooks();
+    }
+    
+    public BookCopy findBookCopyByBarcode(String barcode) {
+        return bookCopyDAO.getBookCopyByBarcode(barcode);
+    }
+    
+    public boolean updateBookCopyStatus(int maCuonSach, int status) {
+        return bookCopyDAO.updateStatus(maCuonSach, status);
+    }
 }

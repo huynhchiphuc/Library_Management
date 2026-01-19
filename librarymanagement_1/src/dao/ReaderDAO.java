@@ -137,4 +137,31 @@ public class ReaderDAO {
         }
         return false;
     }
+
+    public Reader getReaderByCardId(String maThe) {
+        String sql = "SELECT * FROM DocGia WHERE MaThe = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maThe);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Reader r = new Reader();
+                    r.setMaDocGia(rs.getInt("MaDocGia"));
+                    r.setMaThe(rs.getString("MaThe"));
+                    r.setHoTen(rs.getString("HoTen"));
+                    r.setEmail(rs.getString("Email"));
+                    r.setSoDienThoai(rs.getString("SoDienThoai"));
+                    r.setDiaChi(rs.getString("DiaChi"));
+                    r.setGioHanMuon(rs.getInt("GioiHanMuon"));
+                    r.setNgayHetHan(rs.getDate("NgayHetHan"));
+                    r.setDiemViPham(rs.getInt("DiemViPham"));
+                    r.setBiKhoa(rs.getBoolean("BiKhoa"));
+                    return r;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

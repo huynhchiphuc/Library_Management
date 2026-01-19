@@ -4,17 +4,22 @@
  */
 package view;
 
+import controller.ReportController;
+
 /**
  *
  * @author ASUS
  */
 public class ReportForm extends javax.swing.JPanel {
 
+    private ReportController controller;
+
     /**
      * Creates new form ReportForm
      */
     public ReportForm() {
         initComponents();
+        controller = new ReportController(this);
     }
 
     /**
@@ -25,28 +30,126 @@ public class ReportForm extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+        
+        // --- Components ---
+        javax.swing.JPanel pnlStats = new javax.swing.JPanel();
+        javax.swing.JPanel pnlContent = new javax.swing.JPanel();
+        
+        // Stat Cards (using Panels with Borders)
+        javax.swing.JPanel pnlCard1 = createStatCard("TỔNG SỐ SÁCH", new java.awt.Color(52, 152, 219));
+        lblTotalBooks = new javax.swing.JLabel("0");
+        
+        javax.swing.JPanel pnlCard2 = createStatCard("ĐỘC GIẢ", new java.awt.Color(46, 204, 113));
+        lblTotalReaders = new javax.swing.JLabel("0");
+        
+        javax.swing.JPanel pnlCard3 = createStatCard("ĐANG MƯỢN", new java.awt.Color(241, 196, 15));
+        lblBorrowed = new javax.swing.JLabel("0");
+        
+        javax.swing.JPanel pnlCard4 = createStatCard("QUÁ HẠN", new java.awt.Color(231, 76, 60));
+        lblOverdue = new javax.swing.JLabel("0");
+        
+        // Add labels to cards
+        styleValueLabel(lblTotalBooks); pnlCard1.add(lblTotalBooks);
+        styleValueLabel(lblTotalReaders); pnlCard2.add(lblTotalReaders);
+        styleValueLabel(lblBorrowed); pnlCard3.add(lblBorrowed);
+        styleValueLabel(lblOverdue); pnlCard4.add(lblOverdue);
 
-        jLabel1 = new javax.swing.JLabel();
+        // Tabbed Pane for Tables
+        javax.swing.JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
+        
+        javax.swing.JScrollPane scrollRecent = new javax.swing.JScrollPane();
+        tblRecent = new javax.swing.JTable();
+        
+        javax.swing.JScrollPane scrollTop = new javax.swing.JScrollPane();
+        tblTopReaders = new javax.swing.JTable();
 
-        jLabel1.setText("jLabel1");
+        btnRefresh = new javax.swing.JButton("Cập nhật dữ liệu");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(207, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(156, 156, 156))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel1)
-                .addContainerGap(211, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+        // --- LAYOUT ---
+        setLayout(new java.awt.BorderLayout(10, 10));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 1. STATS PANEL (Top)
+        pnlStats.setLayout(new java.awt.GridLayout(1, 4, 15, 0));
+        pnlStats.setPreferredSize(new java.awt.Dimension(0, 120));
+        
+        pnlStats.add(pnlCard1);
+        pnlStats.add(pnlCard2);
+        pnlStats.add(pnlCard3);
+        pnlStats.add(pnlCard4);
+        
+        add(pnlStats, java.awt.BorderLayout.NORTH);
+
+        // 2. CONTENT PANEL (Center)
+        pnlContent.setLayout(new java.awt.BorderLayout(0, 10));
+        
+        // Tables Setup
+        tblRecent.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] { "Mã phiếu", "Người mượn", "Ngày mượn" }
+        ));
+        scrollRecent.setViewportView(tblRecent);
+        tabbedPane.addTab("Hoạt động gần đây", scrollRecent);
+        
+        tblTopReaders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] { "Xếp hạng", "Tên độc giả", "Số lần mượn" }
+        ));
+        scrollTop.setViewportView(tblTopReaders);
+        tabbedPane.addTab("Độc giả tích cực", scrollTop);
+        
+        pnlContent.add(tabbedPane, java.awt.BorderLayout.CENTER);
+        
+        // Refresh Button Panel
+        javax.swing.JPanel pnlBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        pnlBtn.add(btnRefresh);
+        pnlContent.add(pnlBtn, java.awt.BorderLayout.SOUTH);
+
+        add(pnlContent, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>
+
+    // Helper to create styled cards
+    private javax.swing.JPanel createStatCard(String title, java.awt.Color color) {
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(color);
+        panel.setLayout(new java.awt.BorderLayout());
+        panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        javax.swing.JLabel lblTitle = new javax.swing.JLabel(title);
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        lblTitle.setForeground(java.awt.Color.WHITE);
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        panel.add(lblTitle, java.awt.BorderLayout.NORTH);
+        return panel;
+    }
+    
+    private void styleValueLabel(javax.swing.JLabel label) {
+        label.setFont(new java.awt.Font("Segoe UI", 1, 36));
+        label.setForeground(java.awt.Color.WHITE);
+        label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    }
+
+    // Variables
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JLabel lblBorrowed;
+    private javax.swing.JLabel lblOverdue;
+    private javax.swing.JLabel lblTotalBooks;
+    private javax.swing.JLabel lblTotalReaders;
+    private javax.swing.JTable tblRecent;
+    private javax.swing.JTable tblTopReaders;
+    // End Variables
+
+    // Getters
+    public javax.swing.JButton getBtnRefresh() { return btnRefresh; }
+    public javax.swing.JLabel getLblBorrowed() { return lblBorrowed; }
+    public javax.swing.JLabel getLblOverdue() { return lblOverdue; }
+    public javax.swing.JLabel getLblTotalBooks() { return lblTotalBooks; }
+    public javax.swing.JLabel getLblTotalReaders() { return lblTotalReaders; }
+    public javax.swing.JTable getTblRecent() { return tblRecent; }
+    public javax.swing.JTable getTblTopReaders() { return tblTopReaders; }
+
 
     /**
      * @param args the command line arguments

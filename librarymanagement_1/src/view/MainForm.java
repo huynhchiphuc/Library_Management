@@ -31,135 +31,189 @@ public class MainForm extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        
+        // Init components
+        javax.swing.JPanel pnlSide = new javax.swing.JPanel();
+        javax.swing.JLabel lblTitle = new javax.swing.JLabel();
         btnHome = new javax.swing.JButton();
-        btnPenalty = new javax.swing.JButton();
-        btnReader = new javax.swing.JButton();
-        btnReport = new javax.swing.JButton();
         btnBook = new javax.swing.JButton();
+        btnReader = new javax.swing.JButton();
         btnBorrow = new javax.swing.JButton();
-        btnLogout = new javax.swing.JButton();
+        btnPenalty = new javax.swing.JButton();
+        btnReport = new javax.swing.JButton();
+        
+        javax.swing.JPanel pnlHeader = new javax.swing.JPanel();
         lblUserInfo = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
+        
         pnlDesktop = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel(); // Placeholder, might not be needed
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("QUẢN LÝ THƯ VIỆN");
+        setPreferredSize(new java.awt.Dimension(1280, 720));
 
-        btnHome.setText("Trang chủ");
+        // --- LAYOUT SETUP ---
+        getContentPane().setLayout(new java.awt.BorderLayout());
+
+        // --- SIDEBAR (WEST) ---
+        pnlSide.setBackground(new java.awt.Color(44, 62, 80)); // Dark Blue
+        pnlSide.setPreferredSize(new java.awt.Dimension(220, 100));
+        pnlSide.setLayout(new java.awt.GridLayout(10, 1, 0, 5));
+        pnlSide.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 10, 20, 10));
+
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTitle.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitle.setText("THƯ VIỆN");
+        pnlSide.add(lblTitle);
+
+        // Separator/Spacer could be added here but GridLayout makes it tricky. 
+        // We will just add buttons directly.
+        
+        // Helper to style buttons
+        java.awt.Font btnFont = new java.awt.Font("Segoe UI", 0, 14);
+        java.awt.Color txtColor = new java.awt.Color(255, 255, 255);
+        java.awt.Color bgColor = new java.awt.Color(44, 62, 80);
+
+        // BTN HOME
+        btnHome.setBackground(bgColor);
+        btnHome.setFont(btnFont);
+        btnHome.setForeground(txtColor);
+        btnHome.setText("TRANG CHỦ");
+        btnHome.setBorderPainted(false);
+        btnHome.setFocusPainted(false);
+        btnHome.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnHome.setIconTextGap(15);
         btnHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHomeActionPerformed(evt);
             }
         });
+        pnlSide.add(btnHome);
 
-        btnPenalty.setText("Phạt");
-        btnPenalty.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPenaltyActionPerformed(evt);
-            }
-        });
-
-        btnReader.setText("Bạn đọc");
-        btnReader.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReaderActionPerformed(evt);
-            }
-        });
-
-        btnReport.setText("Báo cáo");
-        btnReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportActionPerformed(evt);
-            }
-        });
-
-        btnBook.setText("sách");
+        // BTN BOOK
+        btnBook.setBackground(bgColor);
+        btnBook.setFont(btnFont);
+        btnBook.setForeground(txtColor);
+        btnBook.setText("QUẢN LÝ SÁCH");
+        btnBook.setBorderPainted(false);
+        btnBook.setFocusPainted(false);
+        btnBook.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnBook.setIconTextGap(15);
         btnBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBookActionPerformed(evt);
             }
         });
+        pnlSide.add(btnBook);
 
-        btnBorrow.setText("mượn sách");
+        // BTN READER
+        btnReader.setBackground(bgColor);
+        btnReader.setFont(btnFont);
+        btnReader.setForeground(txtColor);
+        btnReader.setText("QUẢN LÝ ĐỘC GIẢ");
+        btnReader.setBorderPainted(false);
+        btnReader.setFocusPainted(false);
+        btnReader.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnReader.setIconTextGap(15);
+        btnReader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReaderActionPerformed(evt);
+            }
+        });
+        pnlSide.add(btnReader);
+
+        // BTN BORROW
+        btnBorrow.setBackground(bgColor);
+        btnBorrow.setFont(btnFont);
+        btnBorrow.setForeground(txtColor);
+        btnBorrow.setText("MƯỢN - TRẢ");
+        btnBorrow.setBorderPainted(false);
+        btnBorrow.setFocusPainted(false);
+        btnBorrow.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnBorrow.setIconTextGap(15);
         btnBorrow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBorrowActionPerformed(evt);
             }
         });
+        pnlSide.add(btnBorrow);
 
-        btnLogout.setText("Đăng xuất");
+        // BTN PENALTY
+        btnPenalty.setBackground(bgColor);
+        btnPenalty.setFont(btnFont);
+        btnPenalty.setForeground(txtColor);
+        btnPenalty.setText("VI PHẠM");
+        btnPenalty.setBorderPainted(false);
+        btnPenalty.setFocusPainted(false);
+        btnPenalty.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPenalty.setIconTextGap(15);
+        btnPenalty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPenaltyActionPerformed(evt);
+            }
+        });
+        pnlSide.add(btnPenalty);
+
+        // BTN REPORT
+        btnReport.setBackground(bgColor);
+        btnReport.setFont(btnFont);
+        btnReport.setForeground(txtColor);
+        btnReport.setText("BÁO CÁO");
+        btnReport.setBorderPainted(false);
+        btnReport.setFocusPainted(false);
+        btnReport.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnReport.setIconTextGap(15);
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
+        pnlSide.add(btnReport);
+
+        getContentPane().add(pnlSide, java.awt.BorderLayout.WEST);
+
+        // --- HEADER (NORTH) ---
+        pnlHeader.setBackground(new java.awt.Color(236, 240, 241));
+        pnlHeader.setPreferredSize(new java.awt.Dimension(800, 60));
+        pnlHeader.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 15));
+        pnlHeader.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+
+        lblUserInfo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblUserInfo.setForeground(new java.awt.Color(51, 51, 51));
+        lblUserInfo.setText("Xin chào: Admin");
+        pnlHeader.add(lblUserInfo);
+
+        btnLogout.setBackground(new java.awt.Color(231, 76, 60));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("ĐĂNG XUẤT");
+        btnLogout.setFocusPainted(false);
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogoutActionPerformed(evt);
             }
         });
+        pnlHeader.add(btnLogout);
 
-        lblUserInfo.setText("Thông tin user");
+        getContentPane().add(pnlHeader, java.awt.BorderLayout.NORTH);
 
-        pnlDesktop.setBackground(new java.awt.Color(255, 102, 102));
+        // --- CENTER DESKTOP ---
+        pnlDesktop.setBackground(new java.awt.Color(255, 255, 255));
+        pnlDesktop.setLayout(new java.awt.CardLayout());
+        
+        // Add a default welcome / dashboard panel
+        javax.swing.JPanel pnlWelcome = new javax.swing.JPanel();
+        pnlWelcome.setBackground(new java.awt.Color(255, 255, 255));
+        pnlWelcome.setLayout(new java.awt.GridBagLayout());
+        javax.swing.JLabel lblWelcome = new javax.swing.JLabel("CHÀO MỪNG ĐẾN VỚI HỆ THỐNG QUẢN LÝ THƯ VIỆN");
+        lblWelcome.setFont(new java.awt.Font("Segoe UI", 1, 24));
+        lblWelcome.setForeground(new java.awt.Color(204, 204, 204));
+        pnlWelcome.add(lblWelcome);
+        pnlDesktop.add(pnlWelcome, "card0");
 
-        jLabel1.setText("jLabel1");
-
-        javax.swing.GroupLayout pnlDesktopLayout = new javax.swing.GroupLayout(pnlDesktop);
-        pnlDesktop.setLayout(pnlDesktopLayout);
-        pnlDesktopLayout.setHorizontalGroup(
-            pnlDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDesktopLayout.createSequentialGroup()
-                .addGap(270, 270, 270)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlDesktopLayout.setVerticalGroup(
-            pnlDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDesktopLayout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(jLabel1)
-                .addContainerGap(151, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblUserInfo)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnHome)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnReader)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnPenalty)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBook)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBorrow)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLogout))
-                    .addComponent(pnlDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHome)
-                    .addComponent(btnReader)
-                    .addComponent(btnPenalty)
-                    .addComponent(btnBook)
-                    .addComponent(btnBorrow)
-                    .addComponent(btnReport)
-                    .addComponent(btnLogout))
-                .addGap(18, 18, 18)
-                .addComponent(lblUserInfo)
-                .addGap(18, 18, 18)
-                .addComponent(pnlDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
+        getContentPane().add(pnlDesktop, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
