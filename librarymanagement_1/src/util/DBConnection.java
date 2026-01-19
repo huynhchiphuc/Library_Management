@@ -22,9 +22,9 @@ public class DBConnection {
     // Thông tin kết nối MySQL
     private static final String DB_SERVER = "localhost";
     private static final String DB_PORT = "3306";
-    private static final String DB_NAME = "quanlythuvien";
+    private static final String DB_NAME = "db_quanlythuvien";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "";
+    private static final String DB_PASSWORD = "nhan123";
     private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
     
     // Connection string cho MySQL
