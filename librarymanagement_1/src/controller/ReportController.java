@@ -66,5 +66,22 @@ public class ReportController {
                 row[1]  // Count
             });
         }
+        
+        // 3. Borrowing List
+        if (view.getTblBorrowing() != null) {
+            DefaultTableModel modelBorrowing = (DefaultTableModel) view.getTblBorrowing().getModel();
+            modelBorrowing.setRowCount(0);
+            List<Object[]> borrowingList = reportService.getBorrowingList();
+            
+            for (Object[] row : borrowingList) {
+                modelBorrowing.addRow(new Object[]{
+                    row[0], // MaThe
+                    row[1], // HoTen
+                    row[2], // TuaDe
+                    row[3] != null ? sdf.format((java.util.Date)row[3]) : "", // NgayMuon
+                    row[4] // HanTra
+                });
+            }
+        }
     }
 }

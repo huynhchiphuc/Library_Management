@@ -6,6 +6,7 @@ package controller;
 
 import dao.BookDAO;
 import dao.CategoryDAO;
+import service.BookService;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -23,11 +24,13 @@ public class BookController {
     private final BookForm view;
     private final BookDAO bookDAO;
     private final CategoryDAO categoryDAO;
+    private final BookService bookService;
     
     public BookController(BookForm view) {
         this.view = view;
         this.bookDAO = new BookDAO();
         this.categoryDAO = new CategoryDAO();
+        this.bookService = new BookService();
         
         initView();
         initController();
@@ -101,6 +104,10 @@ public class BookController {
             Object descObj = view.getTblBook().getValueAt(row, 8);
             view.getTxtMoTa().setText(descObj != null ? descObj.toString() : "");
             
+            // Show Barcodes
+            List<String> barcodes = bookService.getBarcodes(id);
+            view.getTxtBarcodes().setText(String.join(", ", barcodes));
+            
             String categoryName = (String) view.getTblBook().getValueAt(row, 3);
             selectCategoryByName(categoryName);
         }
@@ -120,9 +127,15 @@ public class BookController {
     private void addBook() {
         Book b = getBookFromForm();
         if (b != null) {
-            if (bookDAO.insertBook(b)) {
-                JOptionPane.showMessageDialog(view, "Thêm thành công!");
-                loadTableData(bookDAO.getAllBooks());
+            // Check quantity and price
+            if (b.getQuantity() <= 0 || b.getPrice() < 0) {
+                 JOptionPane.showMessageDialog(view, "Số lượng phải > 0 và Giá tiền >= 0!");
+                 return;
+            }
+            
+            if (bookService.addBook(b, b.getQuantity(), b.getPrice())) {
+                JOptionPane.showMessageDialog(view, "Thêm thành công! (Đã cập nhật số lượng nếu sách bị trùng)");
+                loadTableData(bookService.getAllBooks());
                 clearForm();
             } else {
                 JOptionPane.showMessageDialog(view, "Thêm thất bại!");
@@ -134,9 +147,9 @@ public class BookController {
         Book b = getBookFromForm();
         if (b != null && !view.getTxtMaDauSach().getText().isEmpty()) {
             b.setId(Integer.parseInt(view.getTxtMaDauSach().getText()));
-            if (bookDAO.updateBook(b)) {
+            if (bookService.updateBookInfo(b)) {
                 JOptionPane.showMessageDialog(view, "Cập nhật thành công!");
-                loadTableData(bookDAO.getAllBooks());
+                loadTableData(bookService.getAllBooks());
                 clearForm();
             } else {
                 JOptionPane.showMessageDialog(view, "Cập nhật thất bại!");
@@ -149,12 +162,12 @@ public class BookController {
         if (!idStr.isEmpty()) {
             int confirm = JOptionPane.showConfirmDialog(view, "Bạn có chắc muốn xóa?");
             if (confirm == JOptionPane.YES_OPTION) {
-                if (bookDAO.deleteBook(Integer.parseInt(idStr))) {
+                if (bookService.deleteBook(Integer.parseInt(idStr))) {
                     JOptionPane.showMessageDialog(view, "Xóa thành công!");
-                    loadTableData(bookDAO.getAllBooks());
+                    loadTableData(bookService.getAllBooks());
                     clearForm();
                 } else {
-                    JOptionPane.showMessageDialog(view, "Xóa thất bại!");
+                    JOptionPane.showMessageDialog(view, "Xóa thất bại! (Sách có thể đang được mượn)");
                 }
             }
         }
@@ -163,9 +176,9 @@ public class BookController {
     private void searchBook() {
         String keyword = JOptionPane.showInputDialog(view, "Nhập từ khóa tìm kiếm:");
         if (keyword != null && !keyword.isEmpty()) {
-            loadTableData(bookDAO.searchBooks(keyword));
+            loadTableData(bookService.searchBooks(keyword));
         } else {
-            loadTableData(bookDAO.getAllBooks());
+            loadTableData(bookService.getAllBooks());
         }
     }
     
@@ -175,7 +188,10 @@ public class BookController {
         view.getTxtTacGia().setText("");
         view.getTxtNXB().setText("");
         view.getTxtNamXB().setText("");
+        view.getTxtGiaTien().setText("");
+        view.getTxtSoLuong().setText("");
         view.getTxtMoTa().setText("");
+        view.getTxtBarcodes().setText("");
         if (view.getCboTheLoai().getItemCount() > 0) {
             view.getCboTheLoai().setSelectedIndex(0);
         }
@@ -195,6 +211,19 @@ public class BookController {
             }
             int year = Integer.parseInt(yearStr);
             
+            // Validate Price & Quantity
+            double price = 0;
+            String priceStr = view.getTxtGiaTien().getText();
+            if (!priceStr.isEmpty()) {
+                 price = Double.parseDouble(priceStr);
+            }
+            
+            int qty = 0;
+            String qtyStr = view.getTxtSoLuong().getText();
+            if(!qtyStr.isEmpty()) {
+                qty = Integer.parseInt(qtyStr);
+            }
+            
             // Validate Category
             Object selected = view.getCboTheLoai().getSelectedItem();
             if (selected == null || !(selected instanceof Category)) {
@@ -212,10 +241,12 @@ public class BookController {
             b.setPublishYear(year);
             b.setCategoryId(cat.getId());
             b.setDescription(desc);
+            b.setPrice(price);
+            b.setQuantity(qty);
             
             return b;
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(view, "Năm xuất bản phải là số nguyên!");
+            JOptionPane.showMessageDialog(view, "Năm XB, Giá tiền, Số lượng phải là số hợp lệ!");
             return null;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Lỗi dữ liệu: " + e.getMessage());

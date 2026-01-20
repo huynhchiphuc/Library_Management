@@ -42,4 +42,8 @@ public class ReportService {
     public List<Object[]> getRecentActivity() {
         return reportDAO.getRecentBorrows(20);
     }
+
+    public List<Object[]> getBorrowingList() {
+        return reportDAO.getBorrowingList();
+    }
 }

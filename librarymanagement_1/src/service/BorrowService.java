@@ -58,4 +58,27 @@ public class BorrowService {
         
         return success;
     }
+
+    public String returnBook(String barcode) {
+        // 1. Find book
+        BookCopy book = bookCopyDAO.getBookCopyByBarcode(barcode);
+        if (book == null) {
+            return "Không tìm thấy sách với mã vạch: " + barcode;
+        }
+        
+        // 2. Check if borrowed
+        if (!borrowDetailDAO.isBookBorrowed(book.getMaCuonSach())) {
+            return "Sách này hiện không được mượn trên hệ thống!";
+        }
+        
+        // 3. Process return
+        boolean updated = borrowDetailDAO.updateReturn(book.getMaCuonSach(), new Date(), "Da tra");
+        if (updated) {
+            // 4. Update book status to Available (1)
+            bookCopyDAO.updateStatus(book.getMaCuonSach(), 1);
+            return "Trả sách thành công: " + book.getTuaDe();
+        } else {
+            return "Lỗi khi cập nhật phiếu mượn!";
+        }
+    }
 }

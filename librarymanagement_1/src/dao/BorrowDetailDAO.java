@@ -31,4 +31,38 @@ public class BorrowDetailDAO {
         }
         return false;
     }
+
+    public boolean updateReturn(int maCuonSach, java.util.Date ngayTra, String tinhTrang) {
+        // Only update the active loan (NgayTra IS NULL)
+        String sql = "UPDATE ChiTietMuonTra SET NgayTra = ?, TinhTrangTra = ? " +
+                     "WHERE MaCuonSach = ? AND NgayTra IS NULL";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setTimestamp(1, new java.sql.Timestamp(ngayTra.getTime()));
+            ps.setString(2, tinhTrang);
+            ps.setInt(3, maCuonSach);
+            
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isBookBorrowed(int maCuonSach) {
+        String sql = "SELECT COUNT(*) FROM ChiTietMuonTra WHERE MaCuonSach = ? AND NgayTra IS NULL";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maCuonSach);
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

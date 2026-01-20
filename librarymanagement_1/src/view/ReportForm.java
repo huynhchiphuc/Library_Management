@@ -99,6 +99,15 @@ public class ReportForm extends javax.swing.JPanel {
         scrollTop.setViewportView(tblTopReaders);
         tabbedPane.addTab("Độc giả tích cực", scrollTop);
         
+        javax.swing.JScrollPane scrollBorrowing = new javax.swing.JScrollPane();
+        tblBorrowing = new javax.swing.JTable();
+        tblBorrowing.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] { "Mã thẻ", "Tên ĐG", "Tên Sách", "Ngày Mượn", "Hạn Trả" }
+        ));
+        scrollBorrowing.setViewportView(tblBorrowing);
+        tabbedPane.addTab("Danh sách đang mượn", scrollBorrowing);
+        
         pnlContent.add(tabbedPane, java.awt.BorderLayout.CENTER);
         
         // Refresh Button Panel
@@ -139,6 +148,7 @@ public class ReportForm extends javax.swing.JPanel {
     private javax.swing.JLabel lblTotalReaders;
     private javax.swing.JTable tblRecent;
     private javax.swing.JTable tblTopReaders;
+    private javax.swing.JTable tblBorrowing;
     // End Variables
 
     // Getters
@@ -149,6 +159,7 @@ public class ReportForm extends javax.swing.JPanel {
     public javax.swing.JLabel getLblTotalReaders() { return lblTotalReaders; }
     public javax.swing.JTable getTblRecent() { return tblRecent; }
     public javax.swing.JTable getTblTopReaders() { return tblTopReaders; }
+    public javax.swing.JTable getTblBorrowing() { return tblBorrowing; }
 
 
     /**

@@ -218,9 +218,34 @@ public class BookForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weighty = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
         inputPanel.add(jScrollPane3, gridBagConstraints);
+
+        jLabel11 = new javax.swing.JLabel();
+        jLabel11.setText("Mã vạch:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel11, gridBagConstraints);
+
+        txtBarcodes = new javax.swing.JTextArea();
+        txtBarcodes.setColumns(20);
+        txtBarcodes.setRows(3);
+        txtBarcodes.setEditable(false);
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jScrollPane4.setViewportView(txtBarcodes);
+        
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(jScrollPane4, gridBagConstraints);
 
         jPanel1.add(inputPanel, java.awt.BorderLayout.CENTER);
 
@@ -409,6 +434,7 @@ public class BookForm extends javax.swing.JPanel {
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cboTheLoai;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -422,6 +448,7 @@ public class BookForm extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable tblBook;
     private javax.swing.JTextField txtGiaTien;
     private javax.swing.JTextField txtMaDauSach;
@@ -431,9 +458,14 @@ public class BookForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtSoLuong;
     private javax.swing.JTextField txtTacGia;
     private javax.swing.JTextField txtTuaDe;
+    private javax.swing.JTextArea txtBarcodes;
     // End of variables declaration//GEN-END:variables
     
     // Các Getter
+    public javax.swing.JTextArea getTxtBarcodes() {
+        return txtBarcodes;
+    }
+
     public javax.swing.JButton getBtnAdd() {
         return btnAdd;
     }

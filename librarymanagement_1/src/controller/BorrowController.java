@@ -56,8 +56,29 @@ public class BorrowController {
         // Reset
         view.getBtnReset().addActionListener(e -> resetForm());
         
-        // Return (Placeholder for now)
-        view.getBtnReturn().addActionListener(e -> JOptionPane.showMessageDialog(view, "Chức năng Nhận trả đang phát triển!"));
+        // Return
+        view.getBtnReturn().addActionListener(e -> returnBook());
+    }
+    
+    private void returnBook() {
+        String barcode = view.getTxtMaSach().getText().trim();
+        if (barcode.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập Mã sách (Barcode) cần trả!");
+            return;
+        }
+        
+        int confirm = JOptionPane.showConfirmDialog(view, "Xác nhận nhận trả sách có mã: " + barcode + "?", 
+                "Xác nhận trả sách", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            String result = borrowService.returnBook(barcode);
+            JOptionPane.showMessageDialog(view, result);
+            
+            if (result.startsWith("Trả sách thành công")) {
+                view.getTxtMaSach().setText("");
+                view.getTxtMaSach().requestFocus();
+            }
+        }
     }
     
     private void checkReader() {

@@ -35,4 +35,37 @@ public class BookService {
     public boolean updateBookCopyStatus(int maCuonSach, int status) {
         return bookCopyDAO.updateStatus(maCuonSach, status);
     }
+    
+    public boolean addBook(Book book, int quantity, double price) {
+        // 1. Check if Book Title exists
+        int existingId = bookDAO.findBookId(book.getTitle(), book.getAuthor(), book.getPublishYear());
+        int bookId;
+        
+        if (existingId != -1) {
+            bookId = existingId;
+        } else {
+            // Create new Title
+            bookId = bookDAO.insertBook(book);
+            if (bookId == -1) return false;
+        }
+        
+        // 2. Add copies
+        return bookDAO.insertCopies(bookId, quantity, price);
+    }
+    
+    public boolean updateBookInfo(Book b) {
+        return bookDAO.updateBook(b);
+    }
+    
+    public boolean deleteBook(int id) {
+        return bookDAO.deleteBook(id);
+    }
+    
+    public List<Book> searchBooks(String keyword) {
+        return bookDAO.searchBooks(keyword);
+    }
+
+    public List<String> getBarcodes(int bookId) {
+        return bookDAO.getBarcodes(bookId);
+    }
 }

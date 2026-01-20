@@ -47,10 +47,10 @@ public class BookDAO {
         return list;
     }
 
-    public boolean insertBook(Book b) {
+    public int insertBook(Book b) {
         String sql = "INSERT INTO DauSach(TuaDe, TacGia, NhaXuatBan, NamXuatBan, MaTheLoai, MoTa) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             
             ps.setString(1, b.getTitle());
             ps.setString(2, b.getAuthor());
@@ -59,11 +59,62 @@ public class BookDAO {
             ps.setInt(5, b.getCategoryId());
             ps.setString(6, b.getDescription());
             
-            return ps.executeUpdate() > 0;
+            int affected = ps.executeUpdate();
+            if (affected > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    
+    public boolean insertCopies(int bookId, int quantity, double price) {
+        String sql = "INSERT INTO CuonSach(MaDauSach, MaVach, TrangThai, TinhTrang, GiaTien) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            for (int i = 0; i < quantity; i++) {
+                ps.setInt(1, bookId);
+                // Generate unique Barcode: BOOK-{ID}-{Timestamp}-{Index}
+                String barcode = "B" + bookId + "-" + System.currentTimeMillis() + i;
+                if (barcode.length() > 20) barcode = barcode.substring(0, 20); // truncate if too long
+                
+                ps.setString(2, barcode);
+                ps.setInt(3, 1); // 1 = Available
+                ps.setString(4, "Mới");
+                ps.setDouble(5, price);
+                ps.addBatch();
+            }
+            
+            int[] results = ps.executeBatch();
+            return results.length > 0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public int findBookId(String title, String author, int year) {
+        String sql = "SELECT MaDauSach FROM DauSach WHERE TuaDe = ? AND TacGia = ? AND NamXuatBan = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, title);
+            ps.setString(2, author);
+            ps.setInt(3, year);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public boolean updateBook(Book b) {
@@ -105,7 +156,7 @@ public class BookDAO {
                      "FROM DauSach b " +
                      "LEFT JOIN TheLoai c ON b.MaTheLoai = c.MaTheLoai " +
                      "LEFT JOIN CuonSach cs ON b.MaDauSach = cs.MaDauSach " +
-                     "WHERE b.TuaDe LIKE ? OR b.TacGia LIKE ? OR b.NhaXuatBan LIKE ? " +
+                     "WHERE b.TuaDe LIKE ? OR b.TacGia LIKE ? OR b.NhaXuatBan LIKE ? OR cs.MaVach LIKE ? " +
                      "GROUP BY b.MaDauSach, b.TuaDe, b.TacGia, b.NhaXuatBan, b.NamXuatBan, b.MaTheLoai, b.HinhAnh, b.MoTa, c.TenTheLoai";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -114,6 +165,7 @@ public class BookDAO {
             ps.setString(1, key);
             ps.setString(2, key);
             ps.setString(3, key);
+            ps.setString(4, key);
             
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -129,6 +181,23 @@ public class BookDAO {
                     b.setQuantity(rs.getInt("SoLuong"));
                     b.setPrice(rs.getDouble("GiaTien"));
                     list.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<String> getBarcodes(int bookId) {
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT MaVach FROM CuonSach WHERE MaDauSach = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(rs.getString("MaVach"));
                 }
             }
         } catch (Exception e) {

@@ -101,4 +101,33 @@ public class ReportDAO {
         }
         return list;
     }
+
+    public List<Object[]> getBorrowingList() {
+        List<Object[]> list = new ArrayList<>();
+        String sql = "SELECT dg.MaThe, dg.HoTen, ds.TuaDe, pm.NgayMuon, pm.HanTra " +
+                     "FROM PhieuMuon pm " +
+                     "JOIN DocGia dg ON pm.MaDocGia = dg.MaDocGia " +
+                     "JOIN ChiTietMuonTra ct ON pm.MaPhieuMuon = ct.MaPhieuMuon " +
+                     "JOIN CuonSach cs ON ct.MaCuonSach = cs.MaCuonSach " +
+                     "JOIN DauSach ds ON cs.MaDauSach = ds.MaDauSach " +
+                     "WHERE ct.NgayTra IS NULL " +
+                     "ORDER BY pm.NgayMuon DESC";
+        
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Object[]{
+                    rs.getString("MaThe"),
+                    rs.getString("HoTen"),
+                    rs.getString("TuaDe"),
+                    rs.getTimestamp("NgayMuon"),
+                    rs.getDate("HanTra")
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
