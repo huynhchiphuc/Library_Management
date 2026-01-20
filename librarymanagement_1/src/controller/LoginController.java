@@ -52,7 +52,7 @@ public class LoginController {
             JOptionPane.showMessageDialog(view, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         
-        
+        //Test commit
         // Code Demo tạm thời cho phép đăng nhập luôn
          java.awt.EventQueue.invokeLater(() -> {
             new MainForm().setVisible(true);
