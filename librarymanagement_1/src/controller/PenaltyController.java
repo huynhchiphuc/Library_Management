@@ -53,7 +53,13 @@ public class PenaltyController {
         if (r != null) {
             currentReader = r;
             view.getLblTenDocGia().setText(r.getHoTen());
-            if (r.isBiKhoa()) {
+            
+            // Calculate and display total unpaid penalty
+            double totalUnpaid = penaltyService.getTotalUnpaidPenalty(r.getMaDocGia());
+            String debtInfo = String.format(" - Tổng nợ: %,.0f VNĐ", totalUnpaid);
+            view.getLblTenDocGia().setText(r.getHoTen() + debtInfo);
+            
+            if (r.isBiKhoa() || totalUnpaid > 0) {
                 view.getLblTenDocGia().setForeground(java.awt.Color.RED);
             } else {
                 view.getLblTenDocGia().setForeground(new java.awt.Color(0, 102, 204));

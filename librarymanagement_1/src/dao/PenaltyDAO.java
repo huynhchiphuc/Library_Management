@@ -75,4 +75,21 @@ public class PenaltyDAO {
         }
         return false;
     }
+    
+    public double getTotalUnpaidPenalty(int maDocGia) {
+        String sql = "SELECT COALESCE(SUM(SoTien), 0) FROM PhieuPhat WHERE MaDocGia = ? AND DaDongTien = 0";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, maDocGia);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

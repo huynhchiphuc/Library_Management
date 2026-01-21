@@ -68,4 +68,12 @@ public class BookService {
     public List<String> getBarcodes(int bookId) {
         return bookDAO.getBarcodes(bookId);
     }
+    
+    public List<Book> getBooksByCategory(int categoryId) {
+        return bookDAO.getBooksByCategory(categoryId);
+    }
+    
+    public Book getBookByBarcode(String barcode) {
+        return bookDAO.getBookByBarcode(barcode);
+    }
 }

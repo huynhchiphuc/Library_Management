@@ -9,6 +9,7 @@ import dao.CategoryDAO;
 import service.BookService;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -47,6 +48,13 @@ public class BookController {
         view.getBtnDelete().addActionListener(e -> deleteBook());
         view.getBtnReset().addActionListener(e -> clearForm());
         view.getBtnSearch().addActionListener(e -> searchBook());
+        
+        // Add filter by category
+        view.getCboTheLoai().addActionListener(e -> {
+            if (view.getCboTheLoai().getItemCount() > 0) {
+                filterByCategory();
+            }
+        });
         
         view.getTblBook().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && view.getTblBook().getSelectedRow() != -1) {
@@ -174,11 +182,46 @@ public class BookController {
     }
     
     private void searchBook() {
-        String keyword = JOptionPane.showInputDialog(view, "Nhập từ khóa tìm kiếm:");
-        if (keyword != null && !keyword.isEmpty()) {
-            loadTableData(bookService.searchBooks(keyword));
-        } else {
-            loadTableData(bookService.getAllBooks());
+        String[] options = {"Từ khóa", "Mã vạch"};
+        int choice = JOptionPane.showOptionDialog(view, 
+            "Chọn phương thức tìm kiếm:", 
+            "Tìm kiếm sách", 
+            JOptionPane.DEFAULT_OPTION, 
+            JOptionPane.QUESTION_MESSAGE, 
+            null, options, options[0]);
+        
+        if (choice == 0) { // Keyword search
+            String keyword = JOptionPane.showInputDialog(view, "Nhập từ khóa tìm kiếm (Tên sách/Tác giả):");
+            if (keyword != null && !keyword.isEmpty()) {
+                loadTableData(bookService.searchBooks(keyword));
+            } else {
+                loadTableData(bookService.getAllBooks());
+            }
+        } else if (choice == 1) { // Barcode search
+            String barcode = JOptionPane.showInputDialog(view, "Nhập hoặc quét mã vạch:");
+            if (barcode != null && !barcode.isEmpty()) {
+                Book book = bookService.getBookByBarcode(barcode);
+                if (book != null) {
+                    List<Book> singleResult = new ArrayList<>();
+                    singleResult.add(book);
+                    loadTableData(singleResult);
+                } else {
+                    JOptionPane.showMessageDialog(view, "Không tìm thấy sách với mã vạch: " + barcode);
+                    loadTableData(bookService.getAllBooks());
+                }
+            } else {
+                loadTableData(bookService.getAllBooks());
+            }
+        }
+    }
+    
+    private void filterByCategory() {
+        Object selected = view.getCboTheLoai().getSelectedItem();
+        if (selected != null && selected instanceof Category) {
+            Category cat = (Category) selected;
+            if (cat.getId() > 0) {
+                loadTableData(bookService.getBooksByCategory(cat.getId()));
+            }
         }
     }
     

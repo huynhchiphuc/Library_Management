@@ -65,4 +65,28 @@ public class BorrowDetailDAO {
         }
         return false;
     }
+    
+    public BorrowDetail getBorrowDetailByCopy(int maCuonSach) {
+        String sql = "SELECT * FROM ChiTietMuonTra WHERE MaCuonSach = ? AND NgayTra IS NULL ORDER BY MaChiTiet DESC LIMIT 1";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, maCuonSach);
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    BorrowDetail detail = new BorrowDetail();
+                    detail.setMaChiTiet(rs.getInt("MaChiTiet"));
+                    detail.setMaPhieuMuon(rs.getInt("MaPhieuMuon"));
+                    detail.setMaCuonSach(rs.getInt("MaCuonSach"));
+                    detail.setNgayTra(rs.getDate("NgayTra"));
+                    detail.setTinhTrangTra(rs.getString("TinhTrangTra"));
+                    detail.setGhiChu(rs.getString("GhiChu"));
+                    return detail;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

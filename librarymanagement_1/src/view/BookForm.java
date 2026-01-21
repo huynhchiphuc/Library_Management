@@ -521,13 +521,14 @@ public class BookForm extends javax.swing.JPanel {
     }
     
     public javax.swing.JTextArea getTxtMoTa() {
-        return txtMoTa; // Hoặc JTextField tùy bạn kéo thả
-    }
-    public javax.swing.JTextField getTxtGiaTien() {
-        return txtGiaTien; // Hoặc JTextField tùy bạn kéo thả
-    }
-    public javax.swing.JTextField getTxtSoLuong() {
-        return txtSoLuong; // Hoặc JTextField tùy bạn kéo thả
+        return txtMoTa;
     }
     
+    public javax.swing.JTextField getTxtGiaTien() {
+        return txtGiaTien;
+    }
+    
+    public javax.swing.JTextField getTxtSoLuong() {
+        return txtSoLuong;
+    }
 }

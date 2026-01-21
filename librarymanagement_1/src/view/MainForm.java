@@ -41,6 +41,8 @@ public class MainForm extends javax.swing.JFrame {
         btnBorrow = new javax.swing.JButton();
         btnPenalty = new javax.swing.JButton();
         btnReport = new javax.swing.JButton();
+        btnCategory = new javax.swing.JButton();
+        btnAuditLog = new javax.swing.JButton();
         
         javax.swing.JPanel pnlHeader = new javax.swing.JPanel();
         lblUserInfo = new javax.swing.JLabel();
@@ -59,7 +61,7 @@ public class MainForm extends javax.swing.JFrame {
         // --- SIDEBAR (WEST) ---
         pnlSide.setBackground(new java.awt.Color(44, 62, 80)); // Dark Blue
         pnlSide.setPreferredSize(new java.awt.Dimension(220, 100));
-        pnlSide.setLayout(new java.awt.GridLayout(10, 1, 0, 5));
+        pnlSide.setLayout(new java.awt.GridLayout(12, 1, 0, 5));
         pnlSide.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -172,6 +174,38 @@ public class MainForm extends javax.swing.JFrame {
         });
         pnlSide.add(btnReport);
 
+        // BTN CATEGORY
+        btnCategory.setBackground(bgColor);
+        btnCategory.setFont(btnFont);
+        btnCategory.setForeground(txtColor);
+        btnCategory.setText("THỂ LOẠI");
+        btnCategory.setBorderPainted(false);
+        btnCategory.setFocusPainted(false);
+        btnCategory.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnCategory.setIconTextGap(15);
+        btnCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCategoryActionPerformed(evt);
+            }
+        });
+        pnlSide.add(btnCategory);
+
+        // BTN AUDIT LOG
+        btnAuditLog.setBackground(bgColor);
+        btnAuditLog.setFont(btnFont);
+        btnAuditLog.setForeground(txtColor);
+        btnAuditLog.setText("NHẬT KÝ");
+        btnAuditLog.setBorderPainted(false);
+        btnAuditLog.setFocusPainted(false);
+        btnAuditLog.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAuditLog.setIconTextGap(15);
+        btnAuditLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAuditLogActionPerformed(evt);
+            }
+        });
+        pnlSide.add(btnAuditLog);
+
         getContentPane().add(pnlSide, java.awt.BorderLayout.WEST);
 
         // --- HEADER (NORTH) ---
@@ -246,6 +280,14 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
 
+    private void btnCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCategoryActionPerformed
+
+    private void btnAuditLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuditLogActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAuditLogActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -282,8 +324,10 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAuditLog;
     private javax.swing.JButton btnBook;
     private javax.swing.JButton btnBorrow;
+    private javax.swing.JButton btnCategory;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnPenalty;
@@ -333,6 +377,26 @@ public class MainForm extends javax.swing.JFrame {
     
     public javax.swing.JPanel getPnlDesktop() {
         return pnlDesktop;
+    }
+    
+    // Getter methods for new buttons (if they exist in the form)
+    // If not added in NetBeans Design view, these will return null safely
+    public javax.swing.JButton getBtnUser() {
+        // Return null if button doesn't exist yet - controller will handle
+        return null; // TODO: Add btnUser to MainForm.form in NetBeans
+    }
+    
+    public javax.swing.JButton getBtnChangePassword() {
+        // Return null if button doesn't exist yet - controller will handle
+        return null; // TODO: Add btnChangePassword to MainForm.form in NetBeans
+    }
+    
+    public javax.swing.JButton getBtnCategory() {
+        return btnCategory;
+    }
+    
+    public javax.swing.JButton getBtnAuditLog() {
+        return btnAuditLog;
     }
     
 }

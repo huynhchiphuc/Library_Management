@@ -38,4 +38,8 @@ public class PenaltyService {
     public boolean payPenalty(int penaltyId) {
         return penaltyDAO.updateStatus(penaltyId, true);
     }
+    
+    public double getTotalUnpaidPenalty(int maDocGia) {
+        return penaltyDAO.getTotalUnpaidPenalty(maDocGia);
+    }
 }

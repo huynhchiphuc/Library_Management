@@ -205,4 +205,67 @@ public class BookDAO {
         }
         return list;
     }
+    
+    public List<Book> getBooksByCategory(int categoryId) {
+        List<Book> list = new ArrayList<>();
+        String sql = "SELECT d.*, t.TenTheLoai, " +
+                     "(SELECT COUNT(*) FROM CuonSach c WHERE c.MaDauSach = d.MaDauSach) as SoLuong, " +
+                     "(SELECT AVG(c.GiaTien) FROM CuonSach c WHERE c.MaDauSach = d.MaDauSach) as GiaTien " +
+                     "FROM DauSach d " +
+                     "LEFT JOIN TheLoai t ON d.MaTheLoai = t.MaTheLoai " +
+                     "WHERE d.MaTheLoai = ? " +
+                     "ORDER BY d.MaDauSach DESC";
+        
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapBook(rs));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public Book getBookByBarcode(String barcode) {
+        String sql = "SELECT d.*, t.TenTheLoai, c.GiaTien, " +
+                     "(SELECT COUNT(*) FROM CuonSach cs WHERE cs.MaDauSach = d.MaDauSach) as SoLuong " +
+                     "FROM CuonSach c " +
+                     "JOIN DauSach d ON c.MaDauSach = d.MaDauSach " +
+                     "LEFT JOIN TheLoai t ON d.MaTheLoai = t.MaTheLoai " +
+                     "WHERE c.MaVach = ?";
+        
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, barcode);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapBook(rs);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    private Book mapBook(ResultSet rs) throws Exception {
+        Book b = new Book();
+        b.setId(rs.getInt("MaDauSach"));
+        b.setTitle(rs.getString("TuaDe"));
+        b.setAuthor(rs.getString("TacGia"));
+        b.setPublisher(rs.getString("NhaXuatBan"));
+        b.setPublishYear(rs.getInt("NamXuatBan"));
+        b.setCategoryId(rs.getInt("MaTheLoai"));
+        b.setImage(rs.getString("HinhAnh"));
+        b.setDescription(rs.getString("MoTa"));
+        b.setCategoryName(rs.getString("TenTheLoai"));
+        b.setQuantity(rs.getInt("SoLuong"));
+        b.setPrice(rs.getDouble("GiaTien"));
+        return b;
+    }
 }
+

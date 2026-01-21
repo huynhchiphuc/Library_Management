@@ -46,4 +46,24 @@ public class ReportService {
     public List<Object[]> getBorrowingList() {
         return reportDAO.getBorrowingList();
     }
+    
+    public List<Object[]> getOverdueBooks() {
+        return reportDAO.getOverdueBooks();
+    }
+    
+    public List<Object[]> getDueSoonBooks() {
+        return reportDAO.getDueSoonBooks();
+    }
+    
+    public int getDueSoonCount() {
+        return reportDAO.countDueSoonBooks();
+    }
+    
+    public List<Object[]> getUnpaidPenalties() {
+        return reportDAO.getUnpaidPenalties();
+    }
+    
+    public double getTotalUnpaidPenalty() {
+        return reportDAO.getTotalUnpaidPenalty();
+    }
 }

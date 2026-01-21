@@ -44,4 +44,29 @@ public class BorrowSlipDAO {
         }
         return -1;
     }
+    
+    public BorrowSlip getBorrowSlip(int maPhieuMuon) {
+        String sql = "SELECT * FROM PhieuMuon WHERE MaPhieuMuon = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, maPhieuMuon);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    BorrowSlip slip = new BorrowSlip();
+                    slip.setMaPhieuMuon(rs.getInt("MaPhieuMuon"));
+                    slip.setMaDocGia(rs.getInt("MaDocGia"));
+                    slip.setMaNguoiDung(rs.getInt("MaNguoiDung"));
+                    slip.setNgayMuon(rs.getDate("NgayMuon"));
+                    slip.setHanTra(rs.getDate("HanTra"));
+                    slip.setGhiChu(rs.getString("GhiChu"));
+                    slip.setTrangThai(rs.getInt("TrangThai"));
+                    return slip;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -1,15 +1,21 @@
 package controller;
 
 import service.AuthService;
+import view.AuditLogForm;
 import view.BookForm;
 import view.BorrowForm;
+import view.CategoryForm;
+import view.ChangePasswordForm;
+import view.HomeForm;
 import view.LoginForm;
 import view.MainForm;
 import view.PenaltyForm;
 import view.ReaderForm;
 import view.ReportForm;
+import view.UserForm;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+import util.Constants;
 
 /**
  * Điều khiển màn hình chính và chuyển hướng chức năng
@@ -20,11 +26,15 @@ public class MainController {
     private final MainForm view;
     
     // Giữ tham chiếu đến các form con để tránh mở nhiều lần (Singleton-ish UI)
+    private HomeForm homeForm;
     private BookForm bookForm;
     private ReaderForm readerForm;
     private BorrowForm borrowForm;
     private PenaltyForm penaltyForm;
     private ReportForm reportForm;
+    private UserForm userForm;
+    private CategoryForm categoryForm;
+    private AuditLogForm auditLogForm;
 
     public MainController(MainForm view) {
         this.view = view;
@@ -34,21 +44,19 @@ public class MainController {
     
     private void initData() {
         // Hiển thị thông tin người dùng đang đăng nhập
-        
         if (AuthService.isLoggedIn()) {
-            view.getLblUserInfo().setText("Xin chào: " + AuthService.getCurrentUser().getFullName() + " | " + AuthService.getCurrentUser().getUsername());
+            String roleName = AuthService.getCurrentUser().getRoleId() == Constants.ROLE_ADMIN ? "Admin" : "Thủ thư";
+            view.getLblUserInfo().setText("👤 " + AuthService.getCurrentUser().getFullName() + 
+                                         " (" + roleName + ") | 🔑 " + AuthService.getCurrentUser().getUsername());
         } else {
             view.getLblUserInfo().setText("Chưa đăng nhập");
-            // Trong thực tế, nên bắt buộc đăng nhập trước khi thấy main form
         }
-        
         
         // Full screen
         view.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void initController() {
-        
         view.getBtnHome().addActionListener(e -> showHome());
         view.getBtnBook().addActionListener(e -> showBookForm());
         view.getBtnReader().addActionListener(e -> showReaderForm());
@@ -57,9 +65,17 @@ public class MainController {
         view.getBtnReport().addActionListener(e -> showReportForm());
         view.getBtnLogout().addActionListener(e -> logout());
         
+        // New buttons
+        if (view.getBtnUser() != null) {
+            view.getBtnUser().addActionListener(e -> showUserForm());
+        }
+        if (view.getBtnChangePassword() != null) {
+            view.getBtnChangePassword().addActionListener(e -> showChangePasswordForm());
+        }
+        
+        view.getBtnCategory().addActionListener(e -> showCategoryForm());
+        view.getBtnAuditLog().addActionListener(e -> showAuditLogForm());
     }
-    
-    // Sau khi bạn thiết kế giao diện bên NetBeans và Uncomment các hàm Getter trong View, hãy Uncomment đoạn code trên để logic hoạt động.
     
     private void showPanel(javax.swing.JPanel panel) {
         view.getPnlDesktop().removeAll();
@@ -70,10 +86,10 @@ public class MainController {
     }
 
     private void showHome() {
-        // Xóa các panel con để hiện màn hình desktop trống (hoặc add Home panel nếu có)
-        view.getPnlDesktop().removeAll();
-        view.getPnlDesktop().revalidate();
-        view.getPnlDesktop().repaint();
+        if (homeForm == null) {
+            homeForm = new HomeForm();
+        }
+        showPanel(homeForm);
     }
     
     private void showBookForm() {
@@ -109,6 +125,49 @@ public class MainController {
             reportForm = new ReportForm();
         }
         showPanel(reportForm);
+    }
+    
+    private void showUserForm() {
+        // Check if admin
+        if (!AuthService.isLoggedIn() || AuthService.getCurrentUser().getRoleId() != Constants.ROLE_ADMIN) {
+            JOptionPane.showMessageDialog(view, "Chỉ Admin mới có quyền quản lý người dùng!", "Không có quyền", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (userForm == null) {
+            userForm = new UserForm();
+        }
+        showPanel(userForm);
+    }
+    
+    private void showChangePasswordForm() {
+        if (!AuthService.isLoggedIn()) {
+            JOptionPane.showMessageDialog(view, "Vui lòng đăng nhập trước!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        ChangePasswordForm cpForm = new ChangePasswordForm();
+        cpForm.setVisible(true);
+    }
+    
+    private void showCategoryForm() {
+        if (categoryForm == null) {
+            categoryForm = new CategoryForm();
+        }
+        showPanel(categoryForm);
+    }
+    
+    private void showAuditLogForm() {
+        // Check if admin
+        if (!AuthService.isLoggedIn() || AuthService.getCurrentUser().getRoleId() != Constants.ROLE_ADMIN) {
+            JOptionPane.showMessageDialog(view, "Chỉ Admin mới có quyền xem nhật ký hoạt động!", "Không có quyền", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (auditLogForm == null) {
+            auditLogForm = new AuditLogForm();
+        }
+        showPanel(auditLogForm);
     }
     
     private void logout() {

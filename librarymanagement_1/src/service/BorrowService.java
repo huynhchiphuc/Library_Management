@@ -7,11 +7,15 @@ package service;
 import dao.BookCopyDAO;
 import dao.BorrowDetailDAO;
 import dao.BorrowSlipDAO;
+import dao.PenaltyDAO;
 import java.util.Date;
 import java.util.List;
 import model.BookCopy;
 import model.BorrowDetail;
 import model.BorrowSlip;
+import model.Penalty;
+import util.Constants;
+import util.DateUtil;
 
 /**
  *
@@ -22,11 +26,13 @@ public class BorrowService {
     private BorrowSlipDAO borrowSlipDAO;
     private BorrowDetailDAO borrowDetailDAO;
     private BookCopyDAO bookCopyDAO;
+    private PenaltyDAO penaltyDAO;
 
     public BorrowService() {
         borrowSlipDAO = new BorrowSlipDAO();
         borrowDetailDAO = new BorrowDetailDAO();
         bookCopyDAO = new BookCopyDAO();
+        penaltyDAO = new PenaltyDAO();
     }
     
     public boolean borrowBooks(int maDocGia, List<BookCopy> books, Date hanTra) {
@@ -35,7 +41,7 @@ public class BorrowService {
         slip.setMaDocGia(maDocGia);
         slip.setNgayMuon(new Date()); // Now
         slip.setHanTra(hanTra);
-        slip.setTrangThai(0); // Active
+        slip.setTrangThai(Constants.BORROW_STATUS_ACTIVE); // Active
         
         int slipId = borrowSlipDAO.insert(slip);
         if (slipId == -1) return false;
@@ -52,8 +58,8 @@ public class BorrowService {
                 success = false;
             }
             
-            // Update Book Status to 2 (Borrowed)
-            bookCopyDAO.updateStatus(book.getMaCuonSach(), 2);
+            // Update Book Status to Borrowed
+            bookCopyDAO.updateStatus(book.getMaCuonSach(), Constants.BOOK_STATUS_BORROWED);
         }
         
         return success;
@@ -71,12 +77,50 @@ public class BorrowService {
             return "Sách này hiện không được mượn trên hệ thống!";
         }
         
-        // 3. Process return
-        boolean updated = borrowDetailDAO.updateReturn(book.getMaCuonSach(), new Date(), "Da tra");
+        // 3. Get borrow detail to check overdue
+        BorrowDetail detail = borrowDetailDAO.getBorrowDetailByCopy(book.getMaCuonSach());
+        if (detail == null) {
+            return "Không tìm thấy thông tin mượn sách!";
+        }
+        
+        // 4. Get borrow slip for due date
+        BorrowSlip slip = borrowSlipDAO.getBorrowSlip(detail.getMaPhieuMuon());
+        if (slip == null) {
+            return "Không tìm thấy phiếu mượn!";
+        }
+        
+        Date returnDate = new Date();
+        Date dueDate = slip.getHanTra();
+        
+        // 5. Calculate penalty if overdue
+        boolean isOverdue = DateUtil.isOverdue(dueDate, returnDate);
+        String message = "Trả sách thành công: " + book.getTuaDe();
+        
+        if (isOverdue) {
+            long overdueDays = DateUtil.calculateOverdueDays(dueDate, returnDate);
+            double penaltyAmount = DateUtil.calculatePenaltyAmount(dueDate, returnDate);
+            
+            // Create penalty record
+            Penalty penalty = new Penalty();
+            penalty.setMaChiTiet(detail.getMaChiTiet());
+            penalty.setMaDocGia(slip.getMaDocGia());
+            penalty.setLyDo("Trả sách quá hạn " + overdueDays + " ngày");
+            penalty.setSoTien(penaltyAmount);
+            penalty.setDaDongTien(false);
+            penalty.setNgayTao(returnDate);
+            
+            penaltyDAO.insert(penalty);
+            
+            message = String.format("Trả sách thành công: %s\n⚠️ QUÁ HẠN %d ngày\n💰 Phí phạt: %,.0f VNĐ\nVui lòng thanh toán phạt!", 
+                                   book.getTuaDe(), overdueDays, penaltyAmount);
+        }
+        
+        // 6. Process return
+        boolean updated = borrowDetailDAO.updateReturn(book.getMaCuonSach(), returnDate, "Da tra");
         if (updated) {
-            // 4. Update book status to Available (1)
-            bookCopyDAO.updateStatus(book.getMaCuonSach(), 1);
-            return "Trả sách thành công: " + book.getTuaDe();
+            // Update book status to Available
+            bookCopyDAO.updateStatus(book.getMaCuonSach(), Constants.BOOK_STATUS_AVAILABLE);
+            return message;
         } else {
             return "Lỗi khi cập nhật phiếu mượn!";
         }
