@@ -73,9 +73,18 @@ public class AuditLogForm extends javax.swing.JPanel {
         btnFilter.setBackground(new java.awt.Color(52, 152, 219));
         btnFilter.setForeground(java.awt.Color.WHITE);
         btnFilter.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnFilter.setFocusPainted(false);
         
         btnRefresh = new javax.swing.JButton("🔄 Làm mới");
+        btnRefresh.setBackground(new java.awt.Color(149, 165, 166));
+        btnRefresh.setForeground(java.awt.Color.WHITE);
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnRefresh.setFocusPainted(false);
+        
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton("Tìm kiếm");
+        btnExport = new javax.swing.JButton("Xuất Excel");
+        lblResultCount = new javax.swing.JLabel("Tổng: 0 bản ghi");
         
         // --- TABLE ---
         javax.swing.JScrollPane scrollTable = new javax.swing.JScrollPane();
@@ -159,23 +168,48 @@ public class AuditLogForm extends javax.swing.JPanel {
         pnlCenter.add(pnlFilter, java.awt.BorderLayout.NORTH);
         pnlCenter.add(scrollTable, java.awt.BorderLayout.CENTER);
         
+        // BOTTOM PANEL
+        javax.swing.JPanel pnlBottom = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlBottom.add(new javax.swing.JLabel("Tìm kiếm:"));
+        txtSearch.setPreferredSize(new java.awt.Dimension(300, 25));
+        pnlBottom.add(txtSearch);
+        btnSearch.setBackground(new java.awt.Color(52, 152, 219));
+        btnSearch.setForeground(java.awt.Color.WHITE);
+        btnSearch.setFocusPainted(false);
+        pnlBottom.add(btnSearch);
+        btnExport.setBackground(new java.awt.Color(39, 174, 96));
+        btnExport.setForeground(java.awt.Color.WHITE);
+        btnExport.setFocusPainted(false);
+        pnlBottom.add(btnExport);
+        lblResultCount.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        pnlBottom.add(lblResultCount);
+        pnlCenter.add(pnlBottom, java.awt.BorderLayout.SOUTH);
+        
         add(pnlCenter, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnExport;
     private javax.swing.JComboBox<String> cboAction;
     private javax.swing.JComboBox<String> cboTable;
     private javax.swing.JComboBox<String> cboUser;
+    private javax.swing.JLabel lblResultCount;
     private javax.swing.JTable tblAuditLog;
+    private javax.swing.JTextField txtSearch;
     // End Variables
 
     // Getters
     public javax.swing.JButton getBtnFilter() { return btnFilter; }
     public javax.swing.JButton getBtnRefresh() { return btnRefresh; }
+    public javax.swing.JButton getBtnSearch() { return btnSearch; }
+    public javax.swing.JButton getBtnExport() { return btnExport; }
     public javax.swing.JComboBox<String> getCboAction() { return cboAction; }
     public javax.swing.JComboBox<String> getCboTable() { return cboTable; }
     public javax.swing.JComboBox<String> getCboUser() { return cboUser; }
+    public javax.swing.JLabel getLblResultCount() { return lblResultCount; }
     public javax.swing.JTable getTblAuditLog() { return tblAuditLog; }
+    public javax.swing.JTextField getTxtSearch() { return txtSearch; }
 }

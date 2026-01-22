@@ -15,10 +15,12 @@ import util.PasswordUtil;
 public class AuthService {
     
     private final UserDAO userDAO;
+    private final AuditService auditService;
     private static User currentUser;
     
     public AuthService() {
         this.userDAO = new UserDAO();
+        this.auditService = new AuditService();
     }
     
     public boolean login(String username, String password) {
@@ -35,6 +37,11 @@ public class AuthService {
             
             if (PasswordUtil.checkPassword(password, user.getPassword())) {
                 currentUser = user;
+                
+                // Log successful login
+                String description = String.format("Đăng nhập thành công - User: %s", username);
+                auditService.logAction(user.getId(), "LOGIN", "NguoiDung", user.getId(), description);
+                
                 return true;
             }
         }
@@ -42,6 +49,11 @@ public class AuthService {
     }
     
     public void logout() {
+        if (currentUser != null) {
+            // Log logout
+            String description = String.format("Đăng xuất - User: %s", currentUser.getUsername());
+            auditService.logAction(currentUser.getId(), "LOGOUT", "NguoiDung", currentUser.getId(), description);
+        }
         currentUser = null;
     }
     

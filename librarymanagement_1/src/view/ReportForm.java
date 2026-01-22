@@ -59,12 +59,33 @@ public class ReportForm extends javax.swing.JPanel {
         javax.swing.JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
         
         javax.swing.JScrollPane scrollRecent = new javax.swing.JScrollPane();
-        tblRecent = new javax.swing.JTable();
+        tblRecent = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
         
         javax.swing.JScrollPane scrollTop = new javax.swing.JScrollPane();
-        tblTopReaders = new javax.swing.JTable();
+        tblTopReaders = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
+        
+        javax.swing.JScrollPane scrollBorrowing = new javax.swing.JScrollPane();
+        tblBorrowing = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
 
         btnRefresh = new javax.swing.JButton("Cập nhật dữ liệu");
+        btnExportRecent = new javax.swing.JButton("Xuất Excel");
+        btnExportTop = new javax.swing.JButton("Xuất Excel");
+        btnExportBorrowing = new javax.swing.JButton("Xuất Excel");
 
         // --- LAYOUT ---
         setLayout(new java.awt.BorderLayout(10, 10));
@@ -85,33 +106,63 @@ public class ReportForm extends javax.swing.JPanel {
         pnlContent.setLayout(new java.awt.BorderLayout(0, 10));
         
         // Tables Setup
+        // Tab 1: Recent Activity
+        javax.swing.JPanel pnlRecentTab = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
         tblRecent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
-            new String [] { "Mã phiếu", "Người mượn", "Ngày mượn" }
+            new String [] { "Mã phiếu", "Người mượn", "Ngày mượn", "Hạn trả", "Trạng thái" }
         ));
         scrollRecent.setViewportView(tblRecent);
-        tabbedPane.addTab("Hoạt động gần đây", scrollRecent);
+        pnlRecentTab.add(scrollRecent, java.awt.BorderLayout.CENTER);
+        javax.swing.JPanel pnlRecentBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnExportRecent.setBackground(new java.awt.Color(39, 174, 96));
+        btnExportRecent.setForeground(java.awt.Color.WHITE);
+        btnExportRecent.setFocusPainted(false);
+        pnlRecentBtn.add(btnExportRecent);
+        pnlRecentTab.add(pnlRecentBtn, java.awt.BorderLayout.SOUTH);
+        tabbedPane.addTab("Hoạt động gần đây", pnlRecentTab);
         
+        // Tab 2: Top Readers
+        javax.swing.JPanel pnlTopTab = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
         tblTopReaders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] { "Xếp hạng", "Tên độc giả", "Số lần mượn" }
         ));
         scrollTop.setViewportView(tblTopReaders);
-        tabbedPane.addTab("Độc giả tích cực", scrollTop);
+        pnlTopTab.add(scrollTop, java.awt.BorderLayout.CENTER);
+        javax.swing.JPanel pnlTopBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnExportTop.setBackground(new java.awt.Color(39, 174, 96));
+        btnExportTop.setForeground(java.awt.Color.WHITE);
+        btnExportTop.setFocusPainted(false);
+        pnlTopBtn.add(btnExportTop);
+        pnlTopTab.add(pnlTopBtn, java.awt.BorderLayout.SOUTH);
+        tabbedPane.addTab("Độc giả tích cực", pnlTopTab);
         
-        javax.swing.JScrollPane scrollBorrowing = new javax.swing.JScrollPane();
+        // Tab 3: Borrowing List
+        javax.swing.JPanel pnlBorrowingTab = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
         tblBorrowing = new javax.swing.JTable();
         tblBorrowing.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] { "Mã thẻ", "Tên ĐG", "Tên Sách", "Ngày Mượn", "Hạn Trả" }
         ));
         scrollBorrowing.setViewportView(tblBorrowing);
-        tabbedPane.addTab("Danh sách đang mượn", scrollBorrowing);
+        pnlBorrowingTab.add(scrollBorrowing, java.awt.BorderLayout.CENTER);
+        javax.swing.JPanel pnlBorrowingBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnExportBorrowing.setBackground(new java.awt.Color(39, 174, 96));
+        btnExportBorrowing.setForeground(java.awt.Color.WHITE);
+        btnExportBorrowing.setFocusPainted(false);
+        pnlBorrowingBtn.add(btnExportBorrowing);
+        pnlBorrowingTab.add(pnlBorrowingBtn, java.awt.BorderLayout.SOUTH);
+        tabbedPane.addTab("Danh sách đang mượn", pnlBorrowingTab);
         
         pnlContent.add(tabbedPane, java.awt.BorderLayout.CENTER);
         
         // Refresh Button Panel
         javax.swing.JPanel pnlBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnRefresh.setBackground(new java.awt.Color(52, 152, 219));
+        btnRefresh.setForeground(java.awt.Color.WHITE);
+        btnRefresh.setFocusPainted(false);
+        btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 12));
         pnlBtn.add(btnRefresh);
         pnlContent.add(pnlBtn, java.awt.BorderLayout.SOUTH);
 
@@ -142,6 +193,9 @@ public class ReportForm extends javax.swing.JPanel {
 
     // Variables
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnExportRecent;
+    private javax.swing.JButton btnExportTop;
+    private javax.swing.JButton btnExportBorrowing;
     private javax.swing.JLabel lblBorrowed;
     private javax.swing.JLabel lblOverdue;
     private javax.swing.JLabel lblTotalBooks;
@@ -153,6 +207,9 @@ public class ReportForm extends javax.swing.JPanel {
 
     // Getters
     public javax.swing.JButton getBtnRefresh() { return btnRefresh; }
+    public javax.swing.JButton getBtnExportRecent() { return btnExportRecent; }
+    public javax.swing.JButton getBtnExportTop() { return btnExportTop; }
+    public javax.swing.JButton getBtnExportBorrowing() { return btnExportBorrowing; }
     public javax.swing.JLabel getLblBorrowed() { return lblBorrowed; }
     public javax.swing.JLabel getLblOverdue() { return lblOverdue; }
     public javax.swing.JLabel getLblTotalBooks() { return lblTotalBooks; }

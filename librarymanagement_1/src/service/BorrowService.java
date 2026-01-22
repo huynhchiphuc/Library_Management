@@ -4,16 +4,18 @@
  */
 package service;
 
+import java.util.Date;
+import java.util.List;
+
 import dao.BookCopyDAO;
 import dao.BorrowDetailDAO;
 import dao.BorrowSlipDAO;
 import dao.PenaltyDAO;
-import java.util.Date;
-import java.util.List;
 import model.BookCopy;
 import model.BorrowDetail;
 import model.BorrowSlip;
 import model.Penalty;
+import model.User;
 import util.Constants;
 import util.DateUtil;
 
@@ -27,12 +29,14 @@ public class BorrowService {
     private BorrowDetailDAO borrowDetailDAO;
     private BookCopyDAO bookCopyDAO;
     private PenaltyDAO penaltyDAO;
+    private AuditService auditService;
 
     public BorrowService() {
         borrowSlipDAO = new BorrowSlipDAO();
         borrowDetailDAO = new BorrowDetailDAO();
         bookCopyDAO = new BookCopyDAO();
         penaltyDAO = new PenaltyDAO();
+        auditService = new AuditService();
     }
     
     public boolean borrowBooks(int maDocGia, List<BookCopy> books, Date hanTra) {
@@ -48,6 +52,7 @@ public class BorrowService {
         
         // 2. Add details & Update book status
         boolean success = true;
+        StringBuilder bookTitles = new StringBuilder();
         for (BookCopy book : books) {
             BorrowDetail detail = new BorrowDetail();
             detail.setMaPhieuMuon(slipId);
@@ -60,6 +65,19 @@ public class BorrowService {
             
             // Update Book Status to Borrowed
             bookCopyDAO.updateStatus(book.getMaCuonSach(), Constants.BOOK_STATUS_BORROWED);
+            
+            if (bookTitles.length() > 0) bookTitles.append(", ");
+            bookTitles.append(book.getTuaDe());
+        }
+        
+        // 3. Log audit if successful
+        if (success) {
+            User currentUser = AuthService.getCurrentUser();
+            if (currentUser != null) {
+                String description = String.format("Tạo phiếu mượn (ID: %d) cho độc giả (Mã: %d) - Số lượng sách: %d (%s)", 
+                    slipId, maDocGia, books.size(), bookTitles.toString());
+                auditService.logAction(currentUser.getId(), "INSERT", "PhieuMuon", slipId, description);
+            }
         }
         
         return success;
@@ -120,6 +138,16 @@ public class BorrowService {
         if (updated) {
             // Update book status to Available
             bookCopyDAO.updateStatus(book.getMaCuonSach(), Constants.BOOK_STATUS_AVAILABLE);
+            
+            // Log audit for return
+            User currentUser = AuthService.getCurrentUser();
+            if (currentUser != null) {
+                String auditDesc = isOverdue 
+                    ? String.format("Trả sách: %s (Barcode: %s) - QUÁ HẠN", book.getTuaDe(), barcode)
+                    : String.format("Trả sách: %s (Barcode: %s)", book.getTuaDe(), barcode);
+                auditService.logAction(currentUser.getId(), "UPDATE", "ChiTietPhieuMuon", detail.getMaChiTiet(), auditDesc);
+            }
+            
             return message;
         } else {
             return "Lỗi khi cập nhật phiếu mượn!";

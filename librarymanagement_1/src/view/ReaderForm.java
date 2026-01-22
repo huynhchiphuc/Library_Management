@@ -31,7 +31,12 @@ public class ReaderForm extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
+        javax.swing.JPanel searchPanel = new javax.swing.JPanel();
         javax.swing.JPanel inputPanel = new javax.swing.JPanel();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch2 = new javax.swing.JButton();
+        btnViewAll = new javax.swing.JButton();
+        lblResultCount = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtMaThe = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -55,12 +60,61 @@ public class ReaderForm extends javax.swing.JPanel {
         btnSearch = new javax.swing.JButton();
         
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblReader = new javax.swing.JTable();
+        tblReader = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
 
         setLayout(new java.awt.BorderLayout(10, 10));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
+
+        // Search Panel
+        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm nhanh", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        searchPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+
+        txtSearch.setPreferredSize(new java.awt.Dimension(350, 30));
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearch2.doClick();
+            }
+        });
+        searchPanel.add(txtSearch);
+
+        btnSearch2.setBackground(new java.awt.Color(52, 152, 219));
+        btnSearch2.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnSearch2.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch2.setText("TÌM");
+        btnSearch2.setPreferredSize(new java.awt.Dimension(80, 30));
+        btnSearch2.setFocusPainted(false);
+        btnSearch2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+        searchPanel.add(btnSearch2);
+
+        btnViewAll.setBackground(new java.awt.Color(149, 165, 166));
+        btnViewAll.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnViewAll.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewAll.setText("XEM TẤT CẢ");
+        btnViewAll.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnViewAll.setFocusPainted(false);
+        btnViewAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewAllActionPerformed(evt);
+            }
+        });
+        searchPanel.add(btnViewAll);
+
+        lblResultCount.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        lblResultCount.setText("Tổng: 0 kết quả");
+        searchPanel.add(lblResultCount);
+
+        jPanel1.add(searchPanel, java.awt.BorderLayout.NORTH);
 
         inputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin độc giả", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
         inputPanel.setLayout(new java.awt.GridBagLayout());
@@ -76,6 +130,8 @@ public class ReaderForm extends javax.swing.JPanel {
         inputPanel.add(jLabel2, gridBagConstraints);
 
         txtMaThe.setColumns(15);
+        txtMaThe.setEditable(false);
+        txtMaThe.setBackground(new java.awt.Color(240, 240, 240));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -192,28 +248,35 @@ public class ReaderForm extends javax.swing.JPanel {
 
         // --- Action Buttons Panel ---
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tác vụ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
-        jPanel2.setLayout(new java.awt.GridLayout(5, 1, 10, 10));
+        jPanel2.setLayout(new java.awt.GridLayout(4, 1, 10, 10));
 
-        btnAdd.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnAdd.setBackground(new java.awt.Color(46, 204, 113));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("THÊM");
-        // btnAdd.addActionListener... (Add logic if needed here or rely on Controller)
+        btnAdd.setFocusPainted(false);
         jPanel2.add(btnAdd);
 
-        btnEdit.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnEdit.setBackground(new java.awt.Color(241, 196, 15));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("SỬA");
+        btnEdit.setFocusPainted(false);
         jPanel2.add(btnEdit);
 
-        btnDelete.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnDelete.setBackground(new java.awt.Color(231, 76, 60));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("XÓA");
+        btnDelete.setFocusPainted(false);
         jPanel2.add(btnDelete);
 
-        btnReset.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
         btnReset.setText("LÀM MỚI");
+        btnReset.setFocusPainted(false);
         jPanel2.add(btnReset);
-
-        btnSearch.setFont(new java.awt.Font("sansserif", 1, 12));
-        btnSearch.setText("TÌM KIẾM");
-        jPanel2.add(btnSearch);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.EAST);
 
@@ -266,6 +329,14 @@ public class ReaderForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNgayHetHanActionPerformed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewAllActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -308,6 +379,10 @@ public class ReaderForm extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSearch2;
+    private javax.swing.JButton btnViewAll;
+    private javax.swing.JLabel lblResultCount;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -346,7 +421,19 @@ public class ReaderForm extends javax.swing.JPanel {
     }
     
     public javax.swing.JButton getBtnSearch() {
-        return btnSearch;
+        return btnSearch2;
+    }
+    
+    public javax.swing.JButton getBtnViewAll() {
+        return btnViewAll;
+    }
+    
+    public javax.swing.JTextField getTxtSearch() {
+        return txtSearch;
+    }
+    
+    public javax.swing.JLabel getLblResultCount() {
+        return lblResultCount;
     }
     
     public javax.swing.JTextField getTxtMaThe() {

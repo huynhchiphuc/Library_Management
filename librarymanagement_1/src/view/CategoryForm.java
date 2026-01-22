@@ -66,16 +66,28 @@ public class CategoryForm extends javax.swing.JPanel {
         btnAdd.setBackground(new java.awt.Color(46, 204, 113));
         btnAdd.setForeground(java.awt.Color.WHITE);
         btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnAdd.setFocusPainted(false);
         
         btnEdit.setBackground(new java.awt.Color(52, 152, 219));
         btnEdit.setForeground(java.awt.Color.WHITE);
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnEdit.setFocusPainted(false);
         
         btnDelete.setBackground(new java.awt.Color(231, 76, 60));
         btnDelete.setForeground(java.awt.Color.WHITE);
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnDelete.setFocusPainted(false);
         
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setForeground(java.awt.Color.WHITE);
         btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnReset.setFocusPainted(false);
+        
+        // Search components
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton("Tìm kiếm");
+        btnViewAll = new javax.swing.JButton("Xem tất cả");
+        lblResultCount = new javax.swing.JLabel("Tổng: 0 thể loại");
         
         // --- TABLE ---
         javax.swing.JScrollPane scrollTable = new javax.swing.JScrollPane();
@@ -198,6 +210,24 @@ public class CategoryForm extends javax.swing.JPanel {
             javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, 
             javax.swing.border.TitledBorder.DEFAULT_POSITION, 
             new java.awt.Font("Segoe UI", 1, 14)));
+        
+        // Search panel
+        javax.swing.JPanel pnlSearch = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlSearch.add(new javax.swing.JLabel("Tìm kiếm:"));
+        txtSearch.setPreferredSize(new java.awt.Dimension(300, 25));
+        pnlSearch.add(txtSearch);
+        btnSearch.setBackground(new java.awt.Color(52, 152, 219));
+        btnSearch.setForeground(java.awt.Color.WHITE);
+        btnSearch.setFocusPainted(false);
+        pnlSearch.add(btnSearch);
+        btnViewAll.setBackground(new java.awt.Color(149, 165, 166));
+        btnViewAll.setForeground(java.awt.Color.WHITE);
+        btnViewAll.setFocusPainted(false);
+        pnlSearch.add(btnViewAll);
+        lblResultCount.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        pnlSearch.add(lblResultCount);
+        pnlList.add(pnlSearch, java.awt.BorderLayout.NORTH);
+        
         pnlList.add(scrollTable, java.awt.BorderLayout.CENTER);
         
         add(pnlList, java.awt.BorderLayout.CENTER);
@@ -208,9 +238,13 @@ public class CategoryForm extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnViewAll;
+    private javax.swing.JLabel lblResultCount;
     private javax.swing.JTable tblCategory;
     private javax.swing.JTextField txtMaTheLoai;
     private javax.swing.JTextArea txtMoTa;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtTenTheLoai;
     // End Variables
 
@@ -219,8 +253,12 @@ public class CategoryForm extends javax.swing.JPanel {
     public javax.swing.JButton getBtnDelete() { return btnDelete; }
     public javax.swing.JButton getBtnEdit() { return btnEdit; }
     public javax.swing.JButton getBtnReset() { return btnReset; }
+    public javax.swing.JButton getBtnSearch() { return btnSearch; }
+    public javax.swing.JButton getBtnViewAll() { return btnViewAll; }
+    public javax.swing.JLabel getLblResultCount() { return lblResultCount; }
     public javax.swing.JTable getTblCategory() { return tblCategory; }
     public javax.swing.JTextField getTxtMaTheLoai() { return txtMaTheLoai; }
     public javax.swing.JTextArea getTxtMoTa() { return txtMoTa; }
+    public javax.swing.JTextField getTxtSearch() { return txtSearch; }
     public javax.swing.JTextField getTxtTenTheLoai() { return txtTenTheLoai; }
 }

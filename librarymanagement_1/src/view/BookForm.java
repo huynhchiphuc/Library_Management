@@ -32,8 +32,13 @@ public class BookForm extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
+        javax.swing.JPanel searchPanel = new javax.swing.JPanel();
         javax.swing.JPanel inputPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        cboSearchType = new javax.swing.JComboBox<>();
+        txtSearch = new javax.swing.JTextField();
+        btnViewAll = new javax.swing.JButton();
+        lblResultCount = new javax.swing.JLabel();
         txtMaDauSach = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtTuaDe = new javax.swing.JTextField();
@@ -59,12 +64,65 @@ public class BookForm extends javax.swing.JPanel {
         btnReset = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblBook = new javax.swing.JTable();
+        tblBook = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
 
         setLayout(new java.awt.BorderLayout(10, 10));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
+
+        // Search Panel
+        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm nhanh", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        searchPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+
+        cboSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Từ khóa", "Mã vạch" }));
+        cboSearchType.setPreferredSize(new java.awt.Dimension(120, 30));
+        searchPanel.add(cboSearchType);
+
+        txtSearch.setPreferredSize(new java.awt.Dimension(300, 30));
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+        searchPanel.add(txtSearch);
+
+        btnSearch.setBackground(new java.awt.Color(52, 152, 219));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setText("TÌM");
+        btnSearch.setPreferredSize(new java.awt.Dimension(80, 30));
+        btnSearch.setFocusPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+        searchPanel.add(btnSearch);
+
+        btnViewAll.setBackground(new java.awt.Color(149, 165, 166));
+        btnViewAll.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnViewAll.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewAll.setText("XEM TẤT CẢ");
+        btnViewAll.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnViewAll.setFocusPainted(false);
+        btnViewAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewAllActionPerformed(evt);
+            }
+        });
+        searchPanel.add(btnViewAll);
+
+        lblResultCount.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        lblResultCount.setText("Tổng: 0 kết quả");
+        searchPanel.add(lblResultCount);
+
+        jPanel1.add(searchPanel, java.awt.BorderLayout.NORTH);
 
         inputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin sách", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
         inputPanel.setLayout(new java.awt.GridBagLayout());
@@ -79,6 +137,8 @@ public class BookForm extends javax.swing.JPanel {
         inputPanel.add(jLabel2, gridBagConstraints);
 
         txtMaDauSach.setColumns(15);
+        txtMaDauSach.setEditable(false);
+        txtMaDauSach.setBackground(new java.awt.Color(240, 240, 240));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -251,10 +311,13 @@ public class BookForm extends javax.swing.JPanel {
 
         // Buttons
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tác vụ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
-        jPanel2.setLayout(new java.awt.GridLayout(5, 1, 10, 10));
+        jPanel2.setLayout(new java.awt.GridLayout(4, 1, 10, 10));
 
-        btnAdd.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnAdd.setBackground(new java.awt.Color(46, 204, 113));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("THÊM");
+        btnAdd.setFocusPainted(false);
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -262,8 +325,11 @@ public class BookForm extends javax.swing.JPanel {
         });
         jPanel2.add(btnAdd);
 
-        btnEdit.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnEdit.setBackground(new java.awt.Color(241, 196, 15));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("SỬA");
+        btnEdit.setFocusPainted(false);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
@@ -271,8 +337,11 @@ public class BookForm extends javax.swing.JPanel {
         });
         jPanel2.add(btnEdit);
 
-        btnDelete.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnDelete.setBackground(new java.awt.Color(231, 76, 60));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("XÓA");
+        btnDelete.setFocusPainted(false);
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -280,23 +349,17 @@ public class BookForm extends javax.swing.JPanel {
         });
         jPanel2.add(btnDelete);
 
-        btnReset.setFont(new java.awt.Font("sansserif", 1, 12));
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
         btnReset.setText("LÀM MỚI");
+        btnReset.setFocusPainted(false);
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnResetActionPerformed(evt);
             }
         });
         jPanel2.add(btnReset);
-
-        btnSearch.setFont(new java.awt.Font("sansserif", 1, 12));
-        btnSearch.setText("TÌM KIẾM");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnSearch);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.EAST);
 
@@ -386,6 +449,15 @@ public class BookForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboTheLoaiActionPerformed
 
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // Trigger search when Enter is pressed
+        btnSearch.doClick();
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewAllActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -432,7 +504,11 @@ public class BookForm extends javax.swing.JPanel {
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnViewAll;
     private javax.swing.JComboBox<String> cboTheLoai;
+    private javax.swing.JComboBox<String> cboSearchType;
+    private javax.swing.JTextField txtSearch;
+    private javax.swing.JLabel lblResultCount;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -530,5 +606,21 @@ public class BookForm extends javax.swing.JPanel {
     
     public javax.swing.JTextField getTxtSoLuong() {
         return txtSoLuong;
+    }
+    
+    public javax.swing.JTextField getTxtSearch() {
+        return txtSearch;
+    }
+    
+    public javax.swing.JComboBox<String> getCboSearchType() {
+        return cboSearchType;
+    }
+    
+    public javax.swing.JButton getBtnViewAll() {
+        return btnViewAll;
+    }
+    
+    public javax.swing.JLabel getLblResultCount() {
+        return lblResultCount;
     }
 }

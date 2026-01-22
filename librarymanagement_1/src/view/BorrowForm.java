@@ -59,7 +59,12 @@ public class BorrowForm extends javax.swing.JPanel {
         
         // Table
         javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane();
-        tblBorrow = new javax.swing.JTable();
+        tblBorrow = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
 
         // --- LAYOUT SETUP ---
         setLayout(new java.awt.BorderLayout(10, 10));
@@ -88,6 +93,10 @@ public class BorrowForm extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
         pnlReader.add(txtMaThe, gridBagConstraints);
+
+        btnCheckReader.setBackground(new java.awt.Color(52, 152, 219));
+        btnCheckReader.setForeground(java.awt.Color.WHITE);
+        btnCheckReader.setFocusPainted(false);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -134,6 +143,10 @@ public class BorrowForm extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
         pnlBookInput.add(txtMaSach, gridBagConstraints);
 
+        btnAddBook.setBackground(new java.awt.Color(46, 204, 113));
+        btnAddBook.setForeground(java.awt.Color.WHITE);
+        btnAddBook.setFocusPainted(false);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -149,6 +162,8 @@ public class BorrowForm extends javax.swing.JPanel {
         pnlBookInput.add(lblNgayTra, gridBagConstraints);
 
         txtHanTra.setText("00/00/0000"); // placeholder
+        txtHanTra.setEditable(false);
+        txtHanTra.setBackground(new java.awt.Color(240, 240, 240));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -180,14 +195,19 @@ public class BorrowForm extends javax.swing.JPanel {
         btnBorrow.setFont(new java.awt.Font("Segoe UI", 1, 12));
         btnBorrow.setBackground(new java.awt.Color(46, 204, 113)); // Green
         btnBorrow.setForeground(java.awt.Color.WHITE);
+        btnBorrow.setFocusPainted(false);
         pnlActions.add(btnBorrow);
 
         btnReturn.setFont(new java.awt.Font("Segoe UI", 1, 12));
         btnReturn.setBackground(new java.awt.Color(52, 152, 219)); // Blue
         btnReturn.setForeground(java.awt.Color.WHITE);
+        btnReturn.setFocusPainted(false);
         pnlActions.add(btnReturn);
 
         btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setForeground(java.awt.Color.WHITE);
+        btnReset.setFocusPainted(false);
         pnlActions.add(btnReset);
 
         add(pnlActions, java.awt.BorderLayout.EAST);

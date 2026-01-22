@@ -40,6 +40,9 @@ public class PenaltyForm extends javax.swing.JPanel {
         javax.swing.JLabel lblMaThe = new javax.swing.JLabel("Mã thẻ ĐG:");
         txtMaThe = new javax.swing.JTextField();
         btnCheckReader = new javax.swing.JButton("Kiểm tra");
+        btnCheckReader.setBackground(new java.awt.Color(52, 152, 219)); // Blue
+        btnCheckReader.setForeground(java.awt.Color.WHITE);
+        btnCheckReader.setFocusPainted(false);
         javax.swing.JLabel lblTenDG = new javax.swing.JLabel("Tên độc giả:");
         lblTenDocGia = new javax.swing.JLabel("...");
         javax.swing.JLabel lblLyDo = new javax.swing.JLabel("Lý do phạt:");
@@ -49,10 +52,24 @@ public class PenaltyForm extends javax.swing.JPanel {
         btnAddPenalty = new javax.swing.JButton("TẠO PHIẾU PHẠT");
         btnAddPenalty.setBackground(new java.awt.Color(231, 76, 60)); // Red
         btnAddPenalty.setForeground(java.awt.Color.WHITE);
+        btnAddPenalty.setFocusPainted(false);
+        btnAddPenalty.setFont(new java.awt.Font("Segoe UI", 1, 12));
         
         // List Panel Components
+        javax.swing.JPanel pnlSearch = new javax.swing.JPanel();
+        javax.swing.JComboBox<String> cboSearchType = new javax.swing.JComboBox<>();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton("Tìm kiếm");
+        btnViewAll = new javax.swing.JButton("Xem tất cả");
+        lblResultCount = new javax.swing.JLabel("Tổng: 0 bản ghi");
+        
         javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane();
-        tblPenalty = new javax.swing.JTable();
+        tblPenalty = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
         javax.swing.JPanel pnlActions = new javax.swing.JPanel();
         btnPay = new javax.swing.JButton("Xác nhận đã đóng tiền");
         btnRefresh = new javax.swing.JButton("Làm mới");
@@ -160,6 +177,25 @@ public class PenaltyForm extends javax.swing.JPanel {
         pnlList.setLayout(new java.awt.BorderLayout(5, 5));
         pnlList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách phiếu phạt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
 
+        // Search Panel
+        pnlSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        cboSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Độc giả", "Trạng thái" }));
+        pnlSearch.add(new javax.swing.JLabel("Tìm theo:"));
+        pnlSearch.add(cboSearchType);
+        txtSearch.setPreferredSize(new java.awt.Dimension(250, 25));
+        pnlSearch.add(txtSearch);
+        btnSearch.setBackground(new java.awt.Color(52, 152, 219));
+        btnSearch.setForeground(java.awt.Color.WHITE);
+        btnSearch.setFocusPainted(false);
+        pnlSearch.add(btnSearch);
+        btnViewAll.setBackground(new java.awt.Color(149, 165, 166));
+        btnViewAll.setForeground(java.awt.Color.WHITE);
+        btnViewAll.setFocusPainted(false);
+        pnlSearch.add(btnViewAll);
+        lblResultCount.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        pnlSearch.add(lblResultCount);
+        pnlList.add(pnlSearch, java.awt.BorderLayout.NORTH);
+
         tblPenalty.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
@@ -171,9 +207,13 @@ public class PenaltyForm extends javax.swing.JPanel {
 
         // Bottom Actions
         pnlActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnRefresh.setBackground(new java.awt.Color(149, 165, 166));
+        btnRefresh.setForeground(java.awt.Color.WHITE);
+        btnRefresh.setFocusPainted(false);
         pnlActions.add(btnRefresh);
         btnPay.setBackground(new java.awt.Color(46, 204, 113));
         btnPay.setForeground(java.awt.Color.WHITE);
+        btnPay.setFocusPainted(false);
         pnlActions.add(btnPay);
         
         pnlList.add(pnlActions, java.awt.BorderLayout.SOUTH);
@@ -186,10 +226,14 @@ public class PenaltyForm extends javax.swing.JPanel {
     private javax.swing.JButton btnCheckReader;
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnViewAll;
+    private javax.swing.JLabel lblResultCount;
     private javax.swing.JLabel lblTenDocGia;
     private javax.swing.JTable tblPenalty;
     private javax.swing.JTextField txtLyDo;
     private javax.swing.JTextField txtMaThe;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSoTien;
     // End variables
 
@@ -198,9 +242,13 @@ public class PenaltyForm extends javax.swing.JPanel {
     public javax.swing.JButton getBtnCheckReader() { return btnCheckReader; }
     public javax.swing.JButton getBtnPay() { return btnPay; }
     public javax.swing.JButton getBtnRefresh() { return btnRefresh; }
+    public javax.swing.JButton getBtnSearch() { return btnSearch; }
+    public javax.swing.JButton getBtnViewAll() { return btnViewAll; }
+    public javax.swing.JLabel getLblResultCount() { return lblResultCount; }
     public javax.swing.JLabel getLblTenDocGia() { return lblTenDocGia; }
     public javax.swing.JTable getTblPenalty() { return tblPenalty; }
     public javax.swing.JTextField getTxtLyDo() { return txtLyDo; }
     public javax.swing.JTextField getTxtMaThe() { return txtMaThe; }
+    public javax.swing.JTextField getTxtSearch() { return txtSearch; }
     public javax.swing.JTextField getTxtSoTien() { return txtSoTien; }
 }

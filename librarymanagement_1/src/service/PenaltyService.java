@@ -4,10 +4,12 @@
  */
 package service;
 
-import dao.PenaltyDAO;
 import java.util.Date;
 import java.util.List;
+
+import dao.PenaltyDAO;
 import model.Penalty;
+import model.User;
 
 /**
  *
@@ -16,9 +18,11 @@ import model.Penalty;
 public class PenaltyService {
     
     private PenaltyDAO penaltyDAO;
+    private AuditService auditService;
 
     public PenaltyService() {
         penaltyDAO = new PenaltyDAO();
+        auditService = new AuditService();
     }
     
     public List<Penalty> getAllPenalties() {
@@ -32,14 +36,42 @@ public class PenaltyService {
         p.setSoTien(soTien);
         p.setDaDongTien(false);
         p.setNgayTao(new Date());
-        return penaltyDAO.insert(p);
+        
+        boolean result = penaltyDAO.insert(p);
+        
+        // Log audit if successful
+        if (result) {
+            User currentUser = AuthService.getCurrentUser();
+            if (currentUser != null) {
+                String description = String.format("Tạo phạt cho độc giả (Mã: %d) - Lý do: %s - Số tiền: %,.0f VNĐ", 
+                    maDocGia, lyDo, soTien);
+                auditService.logAction(currentUser.getId(), "INSERT", "PhatTien", 0, description);
+            }
+        }
+        
+        return result;
     }
     
     public boolean payPenalty(int penaltyId) {
-        return penaltyDAO.updateStatus(penaltyId, true);
+        boolean result = penaltyDAO.updateStatus(penaltyId, true);
+        
+        // Log audit if successful
+        if (result) {
+            User currentUser = AuthService.getCurrentUser();
+            if (currentUser != null) {
+                String description = String.format("Thanh toán phạt (ID: %d)", penaltyId);
+                auditService.logAction(currentUser.getId(), "UPDATE", "PhatTien", penaltyId, description);
+            }
+        }
+        
+        return result;
     }
     
     public double getTotalUnpaidPenalty(int maDocGia) {
         return penaltyDAO.getTotalUnpaidPenalty(maDocGia);
+    }
+    
+    public List<Penalty> searchPenalties(String keyword) {
+        return penaltyDAO.searchPenalties(keyword);
     }
 }

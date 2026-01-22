@@ -7,9 +7,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Reader;
 import util.DBConnection;
 
@@ -163,5 +163,45 @@ public class ReaderDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public String generateNextMaThe() {
+        String sql = "SELECT MaThe FROM DocGia ORDER BY MaDocGia DESC LIMIT 1";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                String lastMaThe = rs.getString("MaThe");
+                // Extract number from MaThe (e.g., "DG001" -> 1)
+                String numPart = lastMaThe.replaceAll("[^0-9]", "");
+                int nextNum = Integer.parseInt(numPart) + 1;
+                // Format with leading zeros (e.g., 2 -> "DG002")
+                return String.format("DG%03d", nextNum);
+            } else {
+                // First reader
+                return "DG001";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Fallback: return timestamp-based ID
+            return "DG" + System.currentTimeMillis() % 1000;
+        }
+    }
+    
+    public int getCurrentBorrowCount(int maDocGia) {
+        String sql = "SELECT COUNT(*) as total FROM PhieuMuon WHERE MaDocGia = ? AND TrangThai = 1";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, maDocGia);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

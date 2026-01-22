@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import util.DBConnection;
 
 /**
@@ -79,7 +80,7 @@ public class ReportDAO {
     // Example: Recent Borrows
     public List<Object[]> getRecentBorrows(int limit) {
          List<Object[]> list = new ArrayList<>();
-        String sql = "SELECT p.MaPhieuMuon, d.HoTen, p.NgayMuon " +
+        String sql = "SELECT p.MaPhieuMuon, d.HoTen, p.NgayMuon, p.HanTra, p.TrangThai " +
                      "FROM PhieuMuon p " +
                      "JOIN DocGia d ON p.MaDocGia = d.MaDocGia " +
                      "ORDER BY p.NgayMuon DESC " +
@@ -92,7 +93,9 @@ public class ReportDAO {
                     list.add(new Object[]{
                         rs.getInt("MaPhieuMuon"), 
                         rs.getString("HoTen"), 
-                        rs.getTimestamp("NgayMuon")
+                        rs.getTimestamp("NgayMuon"),
+                        rs.getDate("HanTra"),
+                        rs.getInt("TrangThai")
                     });
                 }
             }

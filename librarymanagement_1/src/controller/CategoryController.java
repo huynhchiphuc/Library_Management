@@ -4,10 +4,12 @@
  */
 package controller;
 
-import dao.CategoryDAO;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import dao.CategoryDAO;
 import model.Category;
 import view.CategoryForm;
 
@@ -24,8 +26,15 @@ public class CategoryController {
         this.view = view;
         this.dao = new CategoryDAO();
         
+        initView();
         initEvents();
         loadData();
+    }
+    
+    private void initView() {
+        // Setup initial state
+        view.getTxtMaTheLoai().setText("(Tự động)");
+        updateButtonStates(false);
     }
     
     private void initEvents() {
@@ -33,19 +42,26 @@ public class CategoryController {
         view.getBtnEdit().addActionListener(e -> updateCategory());
         view.getBtnDelete().addActionListener(e -> deleteCategory());
         view.getBtnReset().addActionListener(e -> clearForm());
+        view.getBtnSearch().addActionListener(e -> performSearch());
+        view.getBtnViewAll().addActionListener(e -> loadData());
         
         view.getTblCategory().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 selectRow();
+                updateButtonStates(view.getTblCategory().getSelectedRow() != -1);
             }
         });
     }
     
     private void loadData() {
+        List<Category> list = dao.getAllCategories();
+        displayCategories(list);
+    }
+    
+    private void displayCategories(List<Category> list) {
         DefaultTableModel model = (DefaultTableModel) view.getTblCategory().getModel();
         model.setRowCount(0);
         
-        List<Category> list = dao.getAllCategories();
         for (Category cat : list) {
             model.addRow(new Object[]{
                 cat.getId(),
@@ -53,6 +69,8 @@ public class CategoryController {
                 cat.getDescription()
             });
         }
+        
+        view.getLblResultCount().setText("Tổng: " + list.size() + " thể loại");
     }
     
     private void addCategory() {
@@ -60,14 +78,21 @@ public class CategoryController {
         String moTa = view.getTxtMoTa().getText().trim();
         
         if (tenTheLoai.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Vui lòng nhập tên thể loại!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(view, 
+                "Vui lòng nhập tên thể loại!", 
+                "Cảnh báo", 
+                JOptionPane.WARNING_MESSAGE);
             view.getTxtTenTheLoai().requestFocus();
             return;
         }
         
         // Check duplicate
         if (dao.isCategoryExist(tenTheLoai)) {
-            JOptionPane.showMessageDialog(view, "Thể loại này đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(view, 
+                "Thể loại '" + tenTheLoai + "' đã tồn tại!\n" +
+                "Vui lòng chọn tên khác.",
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -76,18 +101,28 @@ public class CategoryController {
         cat.setDescription(moTa.isEmpty() ? null : moTa);
         
         if (dao.insertCategory(cat)) {
-            JOptionPane.showMessageDialog(view, "✅ Thêm thể loại thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(view, 
+                "Thêm thể loại thành công!\n" +
+                "Tên: " + tenTheLoai,
+                "Thành công", 
+                JOptionPane.INFORMATION_MESSAGE);
             loadData();
             clearForm();
         } else {
-            JOptionPane.showMessageDialog(view, "❌ Thêm thể loại thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(view, 
+                "Có lỗi xảy ra khi thêm thể loại!", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
     
     private void updateCategory() {
         String maTheLoai = view.getTxtMaTheLoai().getText().trim();
-        if (maTheLoai.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Vui lòng chọn thể loại cần sửa!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+        if (maTheLoai.isEmpty() || maTheLoai.equals("(Tự động)")) {
+            JOptionPane.showMessageDialog(view, 
+                "Vui lòng chọn thể loại cần sửa!", 
+                "Cảnh báo", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
@@ -95,7 +130,10 @@ public class CategoryController {
         String moTa = view.getTxtMoTa().getText().trim();
         
         if (tenTheLoai.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Vui lòng nhập tên thể loại!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(view, 
+                "Vui lòng nhập tên thể loại!", 
+                "Cảnh báo", 
+                JOptionPane.WARNING_MESSAGE);
             view.getTxtTenTheLoai().requestFocus();
             return;
         }
@@ -105,38 +143,64 @@ public class CategoryController {
         cat.setName(tenTheLoai);
         cat.setDescription(moTa.isEmpty() ? null : moTa);
         
-        int confirm = JOptionPane.showConfirmDialog(view, "Bạn có chắc chắn muốn cập nhật thể loại này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(view, 
+            "Xác nhận cập nhật thể loại:\n" +
+            "Mã: " + maTheLoai + "\n" +
+            "Tên mới: " + tenTheLoai,
+            "Xác nhận", 
+            JOptionPane.YES_NO_OPTION);
+        
         if (confirm == JOptionPane.YES_OPTION) {
             if (dao.updateCategory(cat)) {
-                JOptionPane.showMessageDialog(view, "✅ Cập nhật thể loại thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(view, 
+                    "Cập nhật thể loại thành công!",
+                    "Thành công", 
+                    JOptionPane.INFORMATION_MESSAGE);
                 loadData();
                 clearForm();
             } else {
-                JOptionPane.showMessageDialog(view, "❌ Cập nhật thể loại thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, 
+                    "Có lỗi xảy ra khi cập nhật!",
+                    "Lỗi", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
     }
     
     private void deleteCategory() {
         String maTheLoai = view.getTxtMaTheLoai().getText().trim();
-        if (maTheLoai.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Vui lòng chọn thể loại cần xóa!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+        if (maTheLoai.isEmpty() || maTheLoai.equals("(Tự động)")) {
+            JOptionPane.showMessageDialog(view, 
+                "Vui lòng chọn thể loại cần xóa!", 
+                "Cảnh báo", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
+        String tenTheLoai = view.getTxtTenTheLoai().getText().trim();
+        
         int confirm = JOptionPane.showConfirmDialog(view, 
-            "⚠️ Cảnh báo: Xóa thể loại có thể ảnh hưởng đến các sách đang liên kết!\n\nBạn có chắc chắn muốn xóa?", 
+            "Cảnh báo: Xóa thể loại có thể ảnh hưởng đến các sách đang liên kết!\n\n" +
+            "Thể loại: " + tenTheLoai + "\n\n" +
+            "Bạn có chắc chắn muốn xóa?", 
             "Xác nhận xóa", 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE);
         
         if (confirm == JOptionPane.YES_OPTION) {
             if (dao.deleteCategory(Integer.parseInt(maTheLoai))) {
-                JOptionPane.showMessageDialog(view, "✅ Xóa thể loại thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(view, 
+                    "Xóa thể loại thành công!",
+                    "Thành công", 
+                    JOptionPane.INFORMATION_MESSAGE);
                 loadData();
                 clearForm();
             } else {
-                JOptionPane.showMessageDialog(view, "❌ Xóa thể loại thất bại!\nCó thể thể loại đang được sử dụng.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, 
+                    "Xóa thể loại thất bại!\n" +
+                    "Có thể thể loại đang được sử dụng.",
+                    "Lỗi", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -153,10 +217,30 @@ public class CategoryController {
     }
     
     private void clearForm() {
-        view.getTxtMaTheLoai().setText("");
+        view.getTxtMaTheLoai().setText("(Tự động)");
         view.getTxtTenTheLoai().setText("");
         view.getTxtMoTa().setText("");
         view.getTblCategory().clearSelection();
         view.getTxtTenTheLoai().requestFocus();
+        updateButtonStates(false);
+    }
+    
+    private void performSearch() {
+        String keyword = view.getTxtSearch().getText().trim();
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(view,
+                "Vui lòng nhập từ khóa tìm kiếm!",
+                "Thông báo",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        List<Category> results = dao.searchCategories(keyword);
+        displayCategories(results);
+    }
+    
+    private void updateButtonStates(boolean isRowSelected) {
+        view.getBtnEdit().setEnabled(isRowSelected);
+        view.getBtnDelete().setEnabled(isRowSelected);
     }
 }

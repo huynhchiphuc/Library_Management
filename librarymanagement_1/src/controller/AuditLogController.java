@@ -4,12 +4,14 @@
  */
 package controller;
 
-import dao.AuditLogDAO;
-import dao.UserDAO;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import dao.AuditLogDAO;
+import dao.UserDAO;
 import model.AuditLog;
 import model.User;
 import view.AuditLogForm;
@@ -38,6 +40,8 @@ public class AuditLogController {
     private void initEvents() {
         view.getBtnRefresh().addActionListener(e -> loadData());
         view.getBtnFilter().addActionListener(e -> filterData());
+        view.getBtnSearch().addActionListener(e -> performSearch());
+        view.getBtnExport().addActionListener(e -> exportData());
     }
     
     private void loadUsers() {
@@ -51,10 +55,14 @@ public class AuditLogController {
     }
     
     private void loadData() {
+        List<AuditLog> list = dao.getAllLogs();
+        displayLogs(list);
+    }
+    
+    private void displayLogs(List<AuditLog> list) {
         DefaultTableModel model = (DefaultTableModel) view.getTblAuditLog().getModel();
         model.setRowCount(0);
         
-        List<AuditLog> list = dao.getAllLogs();
         for (AuditLog log : list) {
             model.addRow(new Object[]{
                 log.getMaNhatKy(),
@@ -67,12 +75,64 @@ public class AuditLogController {
                 sdf.format(log.getThoiGian())
             });
         }
+        
+        view.getLblResultCount().setText("Tổng: " + list.size() + " bản ghi");
     }
     
     private void filterData() {
-        // TODO: Implement filter logic based on combo selections
-        // For now, just reload all data
-        loadData();
-        JOptionPane.showMessageDialog(view, "Chức năng lọc đang được phát triển!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        String userSelection = (String) view.getCboUser().getSelectedItem();
+        String actionSelection = (String) view.getCboAction().getSelectedItem();
+        String tableSelection = (String) view.getCboTable().getSelectedItem();
+        
+        List<AuditLog> allLogs = dao.getAllLogs();
+        List<AuditLog> filteredLogs = new java.util.ArrayList<>();
+        
+        for (AuditLog log : allLogs) {
+            boolean matchUser = userSelection.equals("-- Tất cả --") || 
+                               (log.getTenNguoiDung() != null && userSelection.contains(log.getTenNguoiDung()));
+            boolean matchAction = actionSelection.equals("-- Tất cả --") || 
+                                 log.getHanhDong().equals(actionSelection);
+            boolean matchTable = tableSelection.equals("-- Tất cả --") || 
+                                log.getTenBang().equals(tableSelection);
+            
+            if (matchUser && matchAction && matchTable) {
+                filteredLogs.add(log);
+            }
+        }
+        
+        displayLogs(filteredLogs);
+    }
+    
+    private void performSearch() {
+        String keyword = view.getTxtSearch().getText().trim();
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(view,
+                "Vui lòng nhập từ khóa tìm kiếm!",
+                "Thông báo",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        List<AuditLog> allLogs = dao.getAllLogs();
+        List<AuditLog> searchResults = new java.util.ArrayList<>();
+        
+        for (AuditLog log : allLogs) {
+            if ((log.getTenNguoiDung() != null && log.getTenNguoiDung().toLowerCase().contains(keyword.toLowerCase())) ||
+                (log.getHanhDong() != null && log.getHanhDong().toLowerCase().contains(keyword.toLowerCase())) ||
+                (log.getTenBang() != null && log.getTenBang().toLowerCase().contains(keyword.toLowerCase())) ||
+                (log.getMoTaChiTiet() != null && log.getMoTaChiTiet().toLowerCase().contains(keyword.toLowerCase()))) {
+                searchResults.add(log);
+            }
+        }
+        
+        displayLogs(searchResults);
+    }
+    
+    private void exportData() {
+        JOptionPane.showMessageDialog(view,
+            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
+            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
+            "Thông báo",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 }

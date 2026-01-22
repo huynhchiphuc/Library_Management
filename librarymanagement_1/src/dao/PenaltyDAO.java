@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Penalty;
 import util.DBConnection;
 
@@ -91,5 +92,38 @@ public class PenaltyDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public List<Penalty> searchPenalties(String keyword) {
+        List<Penalty> list = new ArrayList<>();
+        String sql = "SELECT p.*, d.HoTen FROM PhieuPhat p " +
+                     "JOIN DocGia d ON p.MaDocGia = d.MaDocGia " +
+                     "WHERE d.HoTen LIKE ? OR p.LyDo LIKE ? " +
+                     "ORDER BY p.NgayTao DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            String pattern = "%" + keyword + "%";
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Penalty p = new Penalty();
+                    p.setMaPhieuPhat(rs.getInt("MaPhieuPhat"));
+                    p.setMaChiTiet(rs.getInt("MaChiTiet"));
+                    p.setMaDocGia(rs.getInt("MaDocGia"));
+                    p.setLyDo(rs.getString("LyDo"));
+                    p.setSoTien(rs.getDouble("SoTien"));
+                    p.setDaDongTien(rs.getBoolean("DaDongTien"));
+                    p.setNgayTao(rs.getTimestamp("NgayTao"));
+                    p.setTenDocGia(rs.getString("HoTen"));
+                    list.add(p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

@@ -6,7 +6,9 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javax.swing.table.DefaultTableModel;
+
 import service.ReportService;
 import view.ReportForm;
 
@@ -22,14 +24,29 @@ public class ReportController {
     public ReportController(ReportForm view) {
         this.view = view;
         this.reportService = new ReportService();
+        
+        initEvents();
         loadDashboardStats();
         loadTables();
+    }
+    
+    private void initEvents() {
+        // Refresh event
+        view.getBtnRefresh().addActionListener(e -> refreshData());
         
-        // Add refresh event
-        view.getBtnRefresh().addActionListener(e -> {
-            loadDashboardStats();
-            loadTables();
-        });
+        // Export events
+        view.getBtnExportRecent().addActionListener(e -> exportRecent());
+        view.getBtnExportTop().addActionListener(e -> exportTopReaders());
+        view.getBtnExportBorrowing().addActionListener(e -> exportBorrowing());
+    }
+    
+    private void refreshData() {
+        loadDashboardStats();
+        loadTables();
+        javax.swing.JOptionPane.showMessageDialog(view,
+            "Dữ liệu đã được cập nhật!",
+            "Thành công",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void loadDashboardStats() {
@@ -40,17 +57,27 @@ public class ReportController {
     }
     
     private void loadTables() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdfFull = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        
         // 1. Recent Activity
         DefaultTableModel modelRecent = (DefaultTableModel) view.getTblRecent().getModel();
         modelRecent.setRowCount(0);
         List<Object[]> recentList = reportService.getRecentActivity();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
         for (Object[] row : recentList) {
+            String status = "";
+            if (row.length > 4 && row[4] != null) {
+                int trangThai = (Integer) row[4];
+                status = trangThai == 1 ? "Đang mượn" : "Đã trả";
+            }
+            
             modelRecent.addRow(new Object[]{
                 row[0], // ID
                 row[1], // Name
-                sdf.format((java.util.Date)row[2]) // Date
+                row[2] != null ? sdfFull.format((java.util.Date)row[2]) : "", // NgayMuon
+                row[3] != null ? sdf.format((java.util.Date)row[3]) : "", // HanTra
+                status
             });
         }
         
@@ -79,9 +106,33 @@ public class ReportController {
                     row[1], // HoTen
                     row[2], // TuaDe
                     row[3] != null ? sdf.format((java.util.Date)row[3]) : "", // NgayMuon
-                    row[4] // HanTra
+                    row[4] != null ? sdf.format((java.util.Date)row[4]) : "" // HanTra
                 });
             }
         }
+    }
+    
+    private void exportRecent() {
+        javax.swing.JOptionPane.showMessageDialog(view,
+            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
+            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
+            "Thông báo",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void exportTopReaders() {
+        javax.swing.JOptionPane.showMessageDialog(view,
+            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
+            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
+            "Thông báo",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void exportBorrowing() {
+        javax.swing.JOptionPane.showMessageDialog(view,
+            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
+            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
+            "Thông báo",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
 }

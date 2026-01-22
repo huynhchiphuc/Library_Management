@@ -85,6 +85,7 @@ public class HomeForm extends javax.swing.JPanel {
         btnCallOverdue.setBackground(new java.awt.Color(231, 76, 60));
         btnCallOverdue.setForeground(java.awt.Color.WHITE);
         btnCallOverdue.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnCallOverdue.setFocusPainted(false);
         
         javax.swing.JPanel pnlOverdueBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         pnlOverdueBtn.add(btnCallOverdue);
@@ -117,6 +118,7 @@ public class HomeForm extends javax.swing.JPanel {
         btnRemindDueSoon.setBackground(new java.awt.Color(241, 196, 15));
         btnRemindDueSoon.setForeground(java.awt.Color.WHITE);
         btnRemindDueSoon.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnRemindDueSoon.setFocusPainted(false);
         
         javax.swing.JPanel pnlDueSoonBtn = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         pnlDueSoonBtn.add(btnRemindDueSoon);
@@ -152,7 +154,10 @@ public class HomeForm extends javax.swing.JPanel {
         // --- REFRESH BUTTON ---
         javax.swing.JPanel pnlBottom = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
         btnRefresh = new javax.swing.JButton("🔄 Làm mới");
+        btnRefresh.setBackground(new java.awt.Color(52, 152, 219));
+        btnRefresh.setForeground(java.awt.Color.WHITE);
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnRefresh.setFocusPainted(false);
         pnlBottom.add(btnRefresh);
         
         // --- LAYOUT ---

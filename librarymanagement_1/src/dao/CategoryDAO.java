@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Category;
 import util.DBConnection;
 
@@ -87,5 +88,30 @@ public class CategoryDAO {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public List<Category> searchCategories(String keyword) {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM TheLoai WHERE TenTheLoai LIKE ? OR MoTa LIKE ? ORDER BY MaTheLoai DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            String pattern = "%" + keyword + "%";
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Category c = new Category();
+                    c.setId(rs.getInt("MaTheLoai"));
+                    c.setName(rs.getString("TenTheLoai"));
+                    c.setDescription(rs.getString("MoTa"));
+                    list.add(c);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
