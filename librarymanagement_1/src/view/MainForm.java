@@ -42,6 +42,7 @@ public class MainForm extends javax.swing.JFrame {
         btnPenalty = new javax.swing.JButton();
         btnReport = new javax.swing.JButton();
         btnCategory = new javax.swing.JButton();
+        btnUser = new javax.swing.JButton();
         btnAuditLog = new javax.swing.JButton();
         
         javax.swing.JPanel pnlHeader = new javax.swing.JPanel();
@@ -61,7 +62,7 @@ public class MainForm extends javax.swing.JFrame {
         // --- SIDEBAR (WEST) ---
         pnlSide.setBackground(new java.awt.Color(44, 62, 80)); // Dark Blue
         pnlSide.setPreferredSize(new java.awt.Dimension(220, 100));
-        pnlSide.setLayout(new java.awt.GridLayout(12, 1, 0, 5));
+        pnlSide.setLayout(new java.awt.GridLayout(13, 1, 0, 5));
         pnlSide.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -190,6 +191,22 @@ public class MainForm extends javax.swing.JFrame {
         });
         pnlSide.add(btnCategory);
 
+        // BTN USER
+        btnUser.setBackground(bgColor);
+        btnUser.setFont(btnFont);
+        btnUser.setForeground(txtColor);
+        btnUser.setText("NGƯỜI DÙNG");
+        btnUser.setBorderPainted(false);
+        btnUser.setFocusPainted(false);
+        btnUser.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnUser.setIconTextGap(15);
+        btnUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUserActionPerformed(evt);
+            }
+        });
+        pnlSide.add(btnUser);
+
         // BTN AUDIT LOG
         btnAuditLog.setBackground(bgColor);
         btnAuditLog.setFont(btnFont);
@@ -288,6 +305,10 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAuditLogActionPerformed
 
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUserActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -333,6 +354,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnPenalty;
     private javax.swing.JButton btnReader;
     private javax.swing.JButton btnReport;
+    private javax.swing.JButton btnUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblUserInfo;
     private javax.swing.JPanel pnlDesktop;
@@ -382,8 +404,7 @@ public class MainForm extends javax.swing.JFrame {
     // Getter methods for new buttons (if they exist in the form)
     // If not added in NetBeans Design view, these will return null safely
     public javax.swing.JButton getBtnUser() {
-        // Return null if button doesn't exist yet - controller will handle
-        return null; // TODO: Add btnUser to MainForm.form in NetBeans
+        return btnUser;
     }
     
     public javax.swing.JButton getBtnChangePassword() {

@@ -1,0 +1,122 @@
+@startuml Library Management Use Case Diagram
+
+title Biểu đồ Use Case - Hệ thống Quản lý Thư viện
+
+left to right direction
+
+' Định nghĩa actors
+actor "Độc giả" as Reader
+actor "Thủ thư" as Librarian
+actor "Admin" as Admin
+
+' Quan hệ kế thừa
+Librarian --|> Reader
+Admin --|> Librarian
+
+rectangle "Hệ thống Quản lý Thư viện" {
+    
+    ' Use cases cho Độc giả
+    usecase "Đăng nhập" as UC1
+    usecase "Xem thông tin cá nhân" as UC2
+    usecase "Xem lịch sử mượn trả" as UC3
+    usecase "Đổi mật khẩu" as UC4
+    
+    ' Use cases cho Thủ thư
+    usecase "Quản lý sách" as UC5
+    usecase "Thêm sách mới" as UC5_1
+    usecase "Sửa thông tin sách" as UC5_2
+    usecase "Xóa sách" as UC5_3
+    usecase "Tìm kiếm sách" as UC5_4
+    
+    usecase "Quản lý độc giả" as UC6
+    usecase "Đăng ký độc giả mới" as UC6_1
+    usecase "Cập nhật thông tin độc giả" as UC6_2
+    usecase "Khóa/Mở khóa thẻ" as UC6_3
+    
+    usecase "Quản lý mượn/trả" as UC7
+    usecase "Cho mượn sách" as UC7_1
+    usecase "Nhận trả sách" as UC7_2
+    usecase "Tự động tính phạt quá hạn" as UC7_3
+    
+    usecase "Quản lý vi phạm" as UC8
+    usecase "Tạo phiếu phạt" as UC8_1
+    usecase "Thu tiền phạt" as UC8_2
+    usecase "Xem tổng nợ" as UC8_3
+    
+    usecase "Xem báo cáo thống kê" as UC9
+    usecase "Thống kê sách quá hạn" as UC9_1
+    usecase "Top độc giả tích cực" as UC9_2
+    usecase "Báo cáo doanh thu phạt" as UC9_3
+    
+    usecase "Quản lý thể loại sách" as UC10
+    
+    ' Use cases cho Admin
+    usecase "Quản lý người dùng" as UC11
+    usecase "Thêm tài khoản" as UC11_1
+    usecase "Phân quyền" as UC11_2
+    usecase "Reset mật khẩu" as UC11_3
+    
+    usecase "Xem nhật ký hoạt động" as UC12
+    usecase "Lọc nhật ký" as UC12_1
+    usecase "Tìm kiếm log" as UC12_2
+}
+
+' Quan hệ giữa Độc giả và Use Cases
+Reader --> UC1
+Reader --> UC2
+Reader --> UC3
+Reader --> UC4
+
+' Quan hệ giữa Thủ thư và Use Cases
+Librarian --> UC5
+Librarian --> UC6
+Librarian --> UC7
+Librarian --> UC8
+Librarian --> UC9
+Librarian --> UC10
+
+' Quan hệ giữa Admin và Use Cases
+Admin --> UC11
+Admin --> UC12
+
+' Quan hệ Include và Extend
+UC5 .> UC5_1 : <<include>>
+UC5 .> UC5_2 : <<include>>
+UC5 .> UC5_3 : <<include>>
+UC5 .> UC5_4 : <<include>>
+
+UC6 .> UC6_1 : <<include>>
+UC6 .> UC6_2 : <<include>>
+UC6 .> UC6_3 : <<include>>
+
+UC7 .> UC7_1 : <<include>>
+UC7 .> UC7_2 : <<include>>
+UC7_2 ..> UC7_3 : <<extend>>
+
+UC8 .> UC8_1 : <<include>>
+UC8 .> UC8_2 : <<include>>
+UC8 .> UC8_3 : <<include>>
+
+UC9 .> UC9_1 : <<include>>
+UC9 .> UC9_2 : <<include>>
+UC9 .> UC9_3 : <<include>>
+
+UC11 .> UC11_1 : <<include>>
+UC11 .> UC11_2 : <<include>>
+UC11 .> UC11_3 : <<include>>
+
+UC12 .> UC12_1 : <<include>>
+UC12 .> UC12_2 : <<include>>
+
+' Ghi chú
+note right of UC7_3
+  Tự động tính phạt 5,000 VNĐ/ngày
+  khi trả sách quá hạn
+end note
+
+note bottom of UC12
+  Chỉ Admin mới có quyền
+  xem nhật ký hệ thống
+end note
+
+@enduml

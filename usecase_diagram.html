@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biểu đồ Use Case - Hệ thống Quản lý Thư viện</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #000;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            overflow-x: auto;
+        }
+
+        #svgDiagram {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+
+        .info-box {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 5px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+            border: 2px solid #333;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: #555;
+            border-color: #555;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* SVG Styles */
+        .actor {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .usecase {
+            fill: white;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .usecase-sub {
+            fill: white;
+            stroke: #666;
+            stroke-width: 1.5;
+        }
+
+        .system-boundary {
+            fill: none;
+            stroke: #333;
+            stroke-width: 3;
+            stroke-dasharray: 10, 5;
+        }
+
+        .association-line {
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .include-line {
+            stroke: #333;
+            stroke-width: 1.5;
+            stroke-dasharray: 5, 5;
+        }
+
+        /* .extend-line {
+            stroke: #666;
+            stroke-width: 1.5;
+            stroke-dasharray: 5, 5;
+        } */
+
+        .inheritance-line {
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .arrow {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .text-label {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            fill: #333;
+            text-anchor: middle;
+        }
+
+        .text-label-small {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 10px;
+            fill: #666;
+            text-anchor: middle;
+            font-style: italic;
+        }
+
+        .actor-text {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            fill: #333;
+            text-anchor: middle;
+        }
+
+        .title-text {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            fill: #333;
+            text-anchor: middle;
+        }
+
+        .note-box {
+            fill: white;
+            stroke: #333;
+            stroke-width: 1.5;
+        }
+
+        .note-text {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 10px;
+            fill: #333;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .diagram-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Biểu đồ Use Case</h1>
+            <p>Hệ thống Quản lý Thư viện</p>
+        </header>
+
+        <div class="content">
+            <div class="info-box">
+                <h3>📋 Mô tả hệ thống</h3>
+                <p><strong>Hệ thống Quản lý Thư viện</strong> bao gồm 2 vai trò chính:</p>
+                <ul>
+                    <li><strong>Thủ thư:</strong> Quản lý sách, độc giả, mượn/trả sách, vi phạm, báo cáo thống kê</li>
+                    <li><strong>Admin:</strong> Quản lý người dùng, phân quyền, xem nhật ký hệ thống</li>
+                </ul>
+                <p><em>Lưu ý: Độc giả không sử dụng hệ thống trực tiếp, chỉ cung cấp thông tin để thủ thư tạo thẻ.</em></p>
+            </div>
+
+            <div class="diagram-container">
+                <svg id="svgDiagram" width="1600" height="1000" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+
+            <div class="button-group">
+                <button class="btn" onclick="downloadPNG()">💾 Tải xuống PNG</button>
+                <button class="btn" onclick="downloadSVG()">📄 Tải xuống SVG</button>
+            </div>
+
+            <div class="info-box">
+                <h3>🔍 Các chức năng chính</h3>
+                <ul>
+                    <li><strong>UC5 - Quản lý sách:</strong> Thêm, sửa, xóa, tìm kiếm sách</li>
+                    <li><strong>UC6 - Quản lý độc giả:</strong> Đăng ký, cập nhật, khóa/mở khóa thẻ</li>
+                    <li><strong>UC7 - Quản lý mượn/trả:</strong> Cho mượn, nhận trả, tự động tính phạt</li>
+                    <li><strong>UC8 - Quản lý vi phạm:</strong> Tạo phiếu phạt, thu tiền phạt</li>
+                    <li><strong>UC9 - Báo cáo thống kê:</strong> Sách quá hạn, top độc giả, doanh thu</li>
+                    <li><strong>UC11 - Quản lý người dùng:</strong> Thêm tài khoản, phân quyền</li>
+                    <li><strong>UC12 - Nhật ký hoạt động:</strong> Xem, lọc, tìm kiếm log (Admin only)</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>⚙️ Quy tắc nghiệp vụ</h3>
+                <ul>
+                    <li>Độc giả không có tài khoản hệ thống, chỉ cung cấp thông tin để thủ thư tạo thẻ</li>
+                    <li>Thời gian mượn sách: <strong>14 ngày</strong></li>
+                    <!-- <li>Phạt quá hạn: <strong>5,000 VNĐ/ngày</strong> (tự động tính)</li> -->
+                    <li>Nhật ký hệ thống: <strong>Chỉ Admin</strong> được xem</li>
+                    <li>Quan hệ kế thừa: Admin → Thủ thư</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Library Management System | Hệ thống Quản lý Thư viện</p>
+            <p>Tạo bằng HTML, CSS & JavaScript thuần</p>
+        </footer>
+    </div>
+
+    <script>
+        // Function to draw actor (stick figure)
+        function drawActor(svg, x, y, label) {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            
+            // Head
+            const head = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            head.setAttribute('cx', x);
+            head.setAttribute('cy', y);
+            head.setAttribute('r', '10');
+            head.setAttribute('class', 'actor');
+            g.appendChild(head);
+            
+            // Body
+            const body = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            body.setAttribute('x1', x);
+            body.setAttribute('y1', y + 10);
+            body.setAttribute('x2', x);
+            body.setAttribute('y2', y + 30);
+            body.setAttribute('class', 'actor');
+            g.appendChild(body);
+            
+            // Left arm
+            const leftArm = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            leftArm.setAttribute('x1', x);
+            leftArm.setAttribute('y1', y + 15);
+            leftArm.setAttribute('x2', x - 15);
+            leftArm.setAttribute('y2', y + 25);
+            leftArm.setAttribute('class', 'actor');
+            g.appendChild(leftArm);
+            
+            // Right arm
+            const rightArm = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            rightArm.setAttribute('x1', x);
+            rightArm.setAttribute('y1', y + 15);
+            rightArm.setAttribute('x2', x + 15);
+            rightArm.setAttribute('y2', y + 25);
+            rightArm.setAttribute('class', 'actor');
+            g.appendChild(rightArm);
+            
+            // Left leg
+            const leftLeg = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            leftLeg.setAttribute('x1', x);
+            leftLeg.setAttribute('y1', y + 30);
+            leftLeg.setAttribute('x2', x - 10);
+            leftLeg.setAttribute('y2', y + 50);
+            leftLeg.setAttribute('class', 'actor');
+            g.appendChild(leftLeg);
+            
+            // Right leg
+            const rightLeg = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            rightLeg.setAttribute('x1', x);
+            rightLeg.setAttribute('y1', y + 30);
+            rightLeg.setAttribute('x2', x + 10);
+            rightLeg.setAttribute('y2', y + 50);
+            rightLeg.setAttribute('class', 'actor');
+            g.appendChild(rightLeg);
+            
+            // Label
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', x);
+            text.setAttribute('y', y + 70);
+            text.setAttribute('class', 'actor-text');
+            text.textContent = label;
+            g.appendChild(text);
+            
+            svg.appendChild(g);
+        }
+
+        // Function to draw use case (ellipse)
+        function drawUseCase(svg, x, y, width, height, label, isMain = true) {
+            const ellipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+            ellipse.setAttribute('cx', x);
+            ellipse.setAttribute('cy', y);
+            ellipse.setAttribute('rx', width);
+            ellipse.setAttribute('ry', height);
+            ellipse.setAttribute('class', isMain ? 'usecase' : 'usecase-sub');
+            svg.appendChild(ellipse);
+            
+            // Wrap text if too long
+            const words = label.split(' ');
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', x);
+            text.setAttribute('y', y);
+            text.setAttribute('class', 'text-label');
+            
+            if (words.length > 2) {
+                const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                tspan1.setAttribute('x', x);
+                tspan1.setAttribute('dy', '-0.4em');
+                tspan1.textContent = words.slice(0, Math.ceil(words.length / 2)).join(' ');
+                text.appendChild(tspan1);
+                
+                const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                tspan2.setAttribute('x', x);
+                tspan2.setAttribute('dy', '1.2em');
+                tspan2.textContent = words.slice(Math.ceil(words.length / 2)).join(' ');
+                text.appendChild(tspan2);
+            } else {
+                text.textContent = label;
+            }
+            
+            svg.appendChild(text);
+        }
+
+        // Function to draw line
+        function drawLine(svg, x1, y1, x2, y2, className, dashed = false) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            line.setAttribute('class', className);
+            svg.appendChild(line);
+        }
+
+        // Function to draw arrow
+        function drawArrow(svg, x1, y1, x2, y2) {
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            const arrowLength = 10;
+            
+            // Main line
+            drawLine(svg, x1, y1, x2, y2, 'inheritance-line');
+            
+            // Arrow head
+            const arrow1x = x2 - arrowLength * Math.cos(angle - Math.PI / 6);
+            const arrow1y = y2 - arrowLength * Math.sin(angle - Math.PI / 6);
+            const arrow2x = x2 - arrowLength * Math.cos(angle + Math.PI / 6);
+            const arrow2y = y2 - arrowLength * Math.sin(angle + Math.PI / 6);
+            
+            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            polygon.setAttribute('points', `${x2},${y2} ${arrow1x},${arrow1y} ${arrow2x},${arrow2y}`);
+            polygon.setAttribute('fill', 'white');
+            polygon.setAttribute('stroke', '#333');
+            polygon.setAttribute('stroke-width', '2');
+            svg.appendChild(polygon);
+        }
+
+        // Function to draw dashed arrow with label
+        function drawDashedArrow(svg, x1, y1, x2, y2, label, className) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            line.setAttribute('class', className);
+            svg.appendChild(line);
+            
+            // Arrow head
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            const arrowLength = 8;
+            const arrow1x = x2 - arrowLength * Math.cos(angle - Math.PI / 6);
+            const arrow1y = y2 - arrowLength * Math.sin(angle - Math.PI / 6);
+            const arrow2x = x2 - arrowLength * Math.cos(angle + Math.PI / 6);
+            const arrow2y = y2 - arrowLength * Math.sin(angle + Math.PI / 6);
+            
+            drawLine(svg, x2, y2, arrow1x, arrow1y, className);
+            drawLine(svg, x2, y2, arrow2x, arrow2y, className);
+            
+            // Label
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2;
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', midX);
+            text.setAttribute('y', midY - 5);
+            text.setAttribute('class', 'text-label-small');
+            text.textContent = label;
+            svg.appendChild(text);
+        }
+
+        // Function to draw note
+        function drawNote(svg, x, y, width, height, text) {
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('x', x);
+            rect.setAttribute('y', y);
+            rect.setAttribute('width', width);
+            rect.setAttribute('height', height);
+            rect.setAttribute('class', 'note-box');
+            svg.appendChild(rect);
+            
+            const lines = text.split('\n');
+            lines.forEach((line, i) => {
+                const noteText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                noteText.setAttribute('x', x + 5);
+                noteText.setAttribute('y', y + 15 + i * 12);
+                noteText.setAttribute('class', 'note-text');
+                noteText.textContent = line;
+                svg.appendChild(noteText);
+            });
+        }
+
+        // Main drawing function
+        function drawDiagram() {
+            const svg = document.getElementById('svgDiagram');
+            
+            // Title
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            title.setAttribute('x', 750);
+            title.setAttribute('y', 30);
+            title.setAttribute('class', 'title-text');
+            title.textContent = 'Biểu đồ Use Case - Hệ thống Quản lý Thư viện';
+            svg.appendChild(title);
+            
+            // System boundary
+            const boundary = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            boundary.setAttribute('x', 280);
+            boundary.setAttribute('y', 80);
+            boundary.setAttribute('width', 1150);
+            boundary.setAttribute('height', 880);
+            boundary.setAttribute('rx', 10);
+            boundary.setAttribute('class', 'system-boundary');
+            svg.appendChild(boundary);
+            
+            const boundaryLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            boundaryLabel.setAttribute('x', 850);
+            boundaryLabel.setAttribute('y', 105);
+            boundaryLabel.setAttribute('class', 'text-label');
+            boundaryLabel.setAttribute('font-weight', 'bold');
+            boundaryLabel.textContent = 'Hệ thống Quản lý Thư viện';
+            svg.appendChild(boundaryLabel);
+            
+            // Draw actors (only Librarian and Admin)
+            drawActor(svg, 120, 350, 'Thủ thư');
+            drawActor(svg, 120, 680, 'Admin');
+            
+            // Inheritance relationship (Admin inherits from Librarian)
+            drawArrow(svg, 120, 710, 120, 430);
+            
+            // Use cases positions (removed UC1-UC4 for Độc giả)
+            const usecases = {
+                // Thủ thư use cases - Quản lý sách
+                uc5: { x: 480, y: 180, label: 'Quản lý sách' },
+                uc5_1: { x: 720, y: 140, label: 'Thêm sách mới', sub: true },
+                uc5_2: { x: 720, y: 180, label: 'Sửa thông tin sách', sub: true },
+                uc5_3: { x: 720, y: 220, label: 'Xóa sách', sub: true },
+                uc5_4: { x: 720, y: 260, label: 'Tìm kiếm sách', sub: true },
+                
+                // Quản lý độc giả
+                uc6: { x: 480, y: 340, label: 'Quản lý độc giả' },
+                uc6_1: { x: 720, y: 310, label: 'Đăng ký độc giả mới', sub: true },
+                uc6_2: { x: 720, y: 350, label: 'Cập nhật thông tin', sub: true },
+                uc6_3: { x: 720, y: 390, label: 'Khóa/Mở khóa thẻ', sub: true },
+                
+                // Quản lý mượn/trả
+                uc7: { x: 480, y: 500, label: 'Quản lý mượn/trả' },
+                uc7_1: { x: 720, y: 460, label: 'Cho mượn sách', sub: true },
+                uc7_2: { x: 720, y: 510, label: 'Nhận trả sách', sub: true },
+                // uc7_3: { x: 980, y: 550, label: 'Tự động tính phạt', sub: true },
+                
+                // Quản lý vi phạm
+                uc8: { x: 480, y: 660, label: 'Quản lý vi phạm' },
+                uc8_1: { x: 720, y: 620, label: 'Tạo phiếu phạt', sub: true },
+                uc8_2: { x: 720, y: 660, label: 'Thu tiền phạt', sub: true },
+                uc8_3: { x: 720, y: 700, label: 'Xem tổng nợ', sub: true },
+                
+                // Quản lý thể loại
+                uc10: { x: 980, y: 200, label: 'Quản lý thể loại' },
+                
+                // Báo cáo thống kê
+                uc9: { x: 1000, y: 320, label: 'Xem báo cáo thống kê' },
+                uc9_1: { x: 1240, y: 280, label: 'Thống kê quá hạn', sub: true },
+                uc9_2: { x: 1240, y: 320, label: 'Top độc giả', sub: true },
+                uc9_3: { x: 1240, y: 360, label: 'Doanh thu phạt', sub: true },
+                
+                // Admin use cases - Quản lý người dùng
+                uc11: { x: 480, y: 800, label: 'Quản lý người dùng' },
+                uc11_1: { x: 720, y: 760, label: 'Thêm tài khoản', sub: true },
+                uc11_2: { x: 720, y: 800, label: 'Phân quyền', sub: true },
+                uc11_3: { x: 720, y: 840, label: 'Reset mật khẩu', sub: true },
+                
+                // Xem nhật ký hoạt động
+                uc12: { x: 1000, y: 800, label: 'Xem nhật ký hoạt động' },
+                uc12_1: { x: 1240, y: 770, label: 'Lọc nhật ký', sub: true },
+                uc12_2: { x: 1240, y: 820, label: 'Tìm kiếm log', sub: true },
+            };
+            
+            // Draw all use cases
+            Object.values(usecases).forEach(uc => {
+                drawUseCase(svg, uc.x, uc.y, uc.sub ? 70 : 80, uc.sub ? 25 : 30, uc.label, !uc.sub);
+            });
+            
+            // Draw associations (Actor to Use Cases)
+            // Thủ thư (inherits all use cases)
+            drawLine(svg, 135, 360, 410, 180, 'association-line');
+            drawLine(svg, 135, 370, 410, 340, 'association-line');
+            drawLine(svg, 135, 380, 410, 500, 'association-line');
+            drawLine(svg, 135, 375, 410, 660, 'association-line');
+            drawLine(svg, 135, 350, 910, 200, 'association-line');
+            drawLine(svg, 135, 355, 930, 320, 'association-line');
+            
+            // Admin
+            drawLine(svg, 135, 690, 410, 800, 'association-line');
+            drawLine(svg, 135, 680, 930, 800, 'association-line');
+            
+            // Draw include relationships
+            // UC5 includes
+            drawDashedArrow(svg, 560, 170, 650, 145, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 180, 650, 180, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 190, 650, 215, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 200, 650, 255, '<<include>>', 'include-line');
+            
+            // UC6 includes
+            drawDashedArrow(svg, 560, 330, 650, 315, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 340, 650, 350, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 350, 650, 385, '<<include>>', 'include-line');
+            
+            // UC7 includes
+            drawDashedArrow(svg, 560, 490, 650, 465, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 510, 650, 510, '<<include>>', 'include-line');
+            // drawDashedArrow(svg, 800, 520, 910, 545, '<<extend>>', 'extend-line');
+            
+            // UC8 includes
+            drawDashedArrow(svg, 560, 650, 650, 625, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 660, 650, 660, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 670, 650, 695, '<<include>>', 'include-line');
+            
+            // UC9 includes
+            drawDashedArrow(svg, 1080, 310, 1170, 285, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 1080, 320, 1170, 320, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 1080, 330, 1170, 355, '<<include>>', 'include-line');
+            
+            // UC11 includes
+            drawDashedArrow(svg, 560, 790, 650, 765, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 800, 650, 800, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 560, 810, 650, 835, '<<include>>', 'include-line');
+            
+            // UC12 includes
+            drawDashedArrow(svg, 1080, 795, 1170, 775, '<<include>>', 'include-line');
+            drawDashedArrow(svg, 1080, 805, 1170, 815, '<<include>>', 'include-line');
+            
+            // Draw notes
+            // drawNote(svg, 1000, 580, 180, 40, 'Tự động tính phạt\n5,000 VNĐ/ngày\nkhi trả quá hạn');
+            drawNote(svg, 1050, 880, 160, 30, 'Chỉ Admin được xem\nnhật ký hệ thống');
+        }
+
+        // Download as PNG
+        function downloadPNG() {
+            const svg = document.getElementById('svgDiagram');
+            const canvas = document.createElement('canvas');
+            canvas.width = svg.getAttribute('width');
+            canvas.height = svg.getAttribute('height');
+            const ctx = canvas.getContext('2d');
+            
+            const data = new XMLSerializer().serializeToString(svg);
+            const img = new Image();
+            const blob = new Blob([data], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            
+            img.onload = function() {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+                URL.revokeObjectURL(url);
+                
+                canvas.toBlob(function(blob) {
+                    const link = document.createElement('a');
+                    link.download = 'usecase_diagram.png';
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                });
+            };
+            
+            img.src = url;
+        }
+
+        // Download as SVG
+        function downloadSVG() {
+            const svg = document.getElementById('svgDiagram');
+            const data = new XMLSerializer().serializeToString(svg);
+            const blob = new Blob([data], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'usecase_diagram.svg';
+            link.href = url;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize diagram
+        window.addEventListener('load', drawDiagram);
+    </script>
+</body>
+</html>

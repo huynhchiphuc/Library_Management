@@ -28,10 +28,15 @@ public class UserForm extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        javax.swing.JPanel searchPanel = new javax.swing.JPanel();
+        javax.swing.JPanel inputPanel = new javax.swing.JPanel();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch2 = new javax.swing.JButton();
+        btnViewAll = new javax.swing.JButton();
+        lblResultCount = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtMaNguoiDung = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -47,195 +52,283 @@ public class UserForm extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         cboVaiTro = new javax.swing.JComboBox<>();
         chkDangHoatDong = new javax.swing.JCheckBox();
-        jPanel3 = new javax.swing.JPanel();
+        
+        jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         btnResetPassword = new javax.swing.JButton();
+        
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblUser = new javax.swing.JTable();
+        tblUser = new javax.swing.JTable() {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
 
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.BorderLayout(10, 10));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        jPanel1.setBackground(new java.awt.Color(41, 128, 185));
-        jPanel1.setPreferredSize(new java.awt.Dimension(800, 60));
+        jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("QUẢN LÝ NGƯỜI DÙNG");
+        // Search Panel
+        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm nhanh", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        searchPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-        );
+        txtSearch.setPreferredSize(new java.awt.Dimension(300, 30));
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearch2.doClick();
+            }
+        });
+        searchPanel.add(txtSearch);
 
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        btnSearch2.setBackground(new java.awt.Color(52, 152, 219));
+        btnSearch2.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnSearch2.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch2.setText("TÌM");
+        btnSearch2.setPreferredSize(new java.awt.Dimension(80, 30));
+        btnSearch2.setFocusPainted(false);
+        searchPanel.add(btnSearch2);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin người dùng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        jPanel2.setPreferredSize(new java.awt.Dimension(800, 280));
+        btnViewAll.setBackground(new java.awt.Color(149, 165, 166));
+        btnViewAll.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        btnViewAll.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewAll.setText("XEM TẤT CẢ");
+        btnViewAll.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnViewAll.setFocusPainted(false);
+        searchPanel.add(btnViewAll);
 
+        lblResultCount.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        lblResultCount.setText("Tổng: 0 kết quả");
+        searchPanel.add(lblResultCount);
+
+        jPanel1.add(searchPanel, java.awt.BorderLayout.NORTH);
+
+        inputPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin người dùng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        inputPanel.setLayout(new java.awt.GridBagLayout());
+
+        // --- Column 1 ---
+        // Mã người dùng
         jLabel2.setText("Mã người dùng:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel2, gridBagConstraints);
 
+        txtMaNguoiDung.setColumns(15);
         txtMaNguoiDung.setEditable(false);
         txtMaNguoiDung.setBackground(new java.awt.Color(240, 240, 240));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(txtMaNguoiDung, gridBagConstraints);
 
+        // Tên đăng nhập
         jLabel3.setText("Tên đăng nhập: *");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel3, gridBagConstraints);
 
+        txtTenDangNhap.setColumns(15);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(txtTenDangNhap, gridBagConstraints);
+
+        // Mật khẩu
         jLabel4.setText("Mật khẩu: *");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel4, gridBagConstraints);
 
-        jLabel5.setText("Họ tên: *");
+        txtMatKhau.setColumns(15);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(txtMatKhau, gridBagConstraints);
 
+        // Họ tên
+        jLabel5.setText("Họ và tên: *");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel5, gridBagConstraints);
+
+        txtHoTen.setColumns(15);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(txtHoTen, gridBagConstraints);
+
+        // --- Column 2 ---
+        // Email
         jLabel6.setText("Email:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel6, gridBagConstraints);
 
+        txtEmail.setColumns(15);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(txtEmail, gridBagConstraints);
+
+        // Số điện thoại
         jLabel7.setText("Số điện thoại:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel7, gridBagConstraints);
 
+        txtSoDienThoai.setColumns(15);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(txtSoDienThoai, gridBagConstraints);
+
+        // Vai trò
         jLabel8.setText("Vai trò: *");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        inputPanel.add(jLabel8, gridBagConstraints);
 
         cboVaiTro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Thủ thư" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(cboVaiTro, gridBagConstraints);
 
-        chkDangHoatDong.setSelected(true);
+        // Trạng thái
         chkDangHoatDong.setText("Đang hoạt động");
+        chkDangHoatDong.setSelected(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
+        inputPanel.add(chkDangHoatDong, gridBagConstraints);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtMaNguoiDung)
-                            .addComponent(txtTenDangNhap)
-                            .addComponent(txtMatKhau)
-                            .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtEmail)
-                            .addComponent(txtSoDienThoai)
-                            .addComponent(cboVaiTro, 0, 250, Short.MAX_VALUE)))
-                    .addComponent(chkDangHoatDong))
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtMaNguoiDung, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtSoDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(cboVaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(chkDangHoatDong)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+        jPanel1.add(inputPanel, java.awt.BorderLayout.CENTER);
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(800, 70));
+        // --- Action Buttons Panel ---
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tác vụ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
         btnAdd.setBackground(new java.awt.Color(46, 204, 113));
-        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("THÊM");
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdd.setPreferredSize(new java.awt.Dimension(120, 40));
+        btnAdd.setFocusPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 80;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanel2.add(btnAdd, gridBagConstraints);
 
         btnEdit.setBackground(new java.awt.Color(52, 152, 219));
-        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("SỬA");
         btnEdit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEdit.setPreferredSize(new java.awt.Dimension(120, 40));
+        btnEdit.setFocusPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 80;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanel2.add(btnEdit, gridBagConstraints);
 
         btnDelete.setBackground(new java.awt.Color(231, 76, 60));
-        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("XÓA");
         btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnDelete.setPreferredSize(new java.awt.Dimension(120, 40));
-
-        btnReset.setBackground(new java.awt.Color(149, 165, 166));
-        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnReset.setForeground(new java.awt.Color(255, 255, 255));
-        btnReset.setText("RESET");
-        btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnReset.setPreferredSize(new java.awt.Dimension(120, 40));
+        btnDelete.setFocusPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 80;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanel2.add(btnDelete, gridBagConstraints);
 
         btnResetPassword.setBackground(new java.awt.Color(230, 126, 34));
-        btnResetPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnResetPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnResetPassword.setForeground(new java.awt.Color(255, 255, 255));
         btnResetPassword.setText("ĐẶT LẠI MK");
         btnResetPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnResetPassword.setPreferredSize(new java.awt.Dimension(140, 40));
+        btnResetPassword.setFocusPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 80;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanel2.add(btnResetPassword, gridBagConstraints);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(178, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setText("RESET");
+        btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.setFocusPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 80;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanel2.add(btnReset, gridBagConstraints);
 
-        add(jPanel3, java.awt.BorderLayout.PAGE_END);
+        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
+
+        add(jPanel1, java.awt.BorderLayout.WEST);
 
         tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -257,7 +350,7 @@ public class UserForm extends javax.swing.JPanel {
         tblUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tblUser);
 
-        add(jScrollPane1, java.awt.BorderLayout.SOUTH);
+        add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -267,9 +360,14 @@ public class UserForm extends javax.swing.JPanel {
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnResetPassword;
+    private javax.swing.JButton btnSearch2;
+    private javax.swing.JButton btnViewAll;
     private javax.swing.JComboBox<String> cboVaiTro;
     private javax.swing.JCheckBox chkDangHoatDong;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblUser;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -277,15 +375,12 @@ public class UserForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblUser;
+    private javax.swing.JLabel lblResultCount;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtHoTen;
     private javax.swing.JTextField txtMaNguoiDung;
     private javax.swing.JPasswordField txtMatKhau;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSoDienThoai;
     private javax.swing.JTextField txtTenDangNhap;
     // End of variables declaration//GEN-END:variables
@@ -296,13 +391,17 @@ public class UserForm extends javax.swing.JPanel {
     public javax.swing.JButton getBtnEdit() { return btnEdit; }
     public javax.swing.JButton getBtnReset() { return btnReset; }
     public javax.swing.JButton getBtnResetPassword() { return btnResetPassword; }
+    public javax.swing.JButton getBtnSearch2() { return btnSearch2; }
+    public javax.swing.JButton getBtnViewAll() { return btnViewAll; }
     public javax.swing.JComboBox<String> getCboVaiTro() { return cboVaiTro; }
     public javax.swing.JCheckBox getChkDangHoatDong() { return chkDangHoatDong; }
     public javax.swing.JTable getTblUser() { return tblUser; }
+    public javax.swing.JLabel getLblResultCount() { return lblResultCount; }
     public javax.swing.JTextField getTxtEmail() { return txtEmail; }
     public javax.swing.JTextField getTxtHoTen() { return txtHoTen; }
     public javax.swing.JTextField getTxtMaNguoiDung() { return txtMaNguoiDung; }
     public javax.swing.JPasswordField getTxtMatKhau() { return txtMatKhau; }
+    public javax.swing.JTextField getTxtSearch() { return txtSearch; }
     public javax.swing.JTextField getTxtSoDienThoai() { return txtSoDienThoai; }
     public javax.swing.JTextField getTxtTenDangNhap() { return txtTenDangNhap; }
 }

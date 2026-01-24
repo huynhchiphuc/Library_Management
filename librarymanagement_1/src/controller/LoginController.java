@@ -4,11 +4,12 @@
  */
 package controller;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import service.AuthService;
 import view.LoginForm;
 import view.MainForm;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  * Controller xử lý đăng nhập

@@ -40,12 +40,42 @@ public class UserController {
         view.getBtnDelete().addActionListener(e -> deleteUser());
         view.getBtnReset().addActionListener(e -> clearForm());
         view.getBtnResetPassword().addActionListener(e -> resetPassword());
+        view.getBtnSearch2().addActionListener(e -> searchUser());
+        view.getBtnViewAll().addActionListener(e -> loadData());
         
         view.getTblUser().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && view.getTblUser().getSelectedRow() != -1) {
                 fillForm();
             }
         });
+    }
+    
+    private void searchUser() {
+        String keyword = view.getTxtSearch().getText().trim();
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        List<User> users = userDAO.searchUser(keyword);
+        DefaultTableModel model = (DefaultTableModel) view.getTblUser().getModel();
+        model.setRowCount(0);
+        
+        for (User u : users) {
+            Object[] row = {
+                u.getId(),
+                u.getUsername(),
+                u.getFullName(),
+                u.getEmail(),
+                u.getPhoneNumber(),
+                u.getRoleId() == Constants.ROLE_ADMIN ? "Admin" : "Thủ thư",
+                u.isActive() ? "Hoạt động" : "Khóa",
+                dateFormat.format(u.getCreatedAt())
+            };
+            model.addRow(row);
+        }
+        
+        view.getLblResultCount().setText("Tổng: " + users.size() + " kết quả");
     }
     
     private void loadData() {
@@ -66,6 +96,8 @@ public class UserController {
             };
             model.addRow(row);
         }
+        
+        view.getLblResultCount().setText("Tổng: " + users.size() + " kết quả");
     }
     
     private void fillForm() {

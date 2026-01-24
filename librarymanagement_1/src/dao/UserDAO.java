@@ -58,6 +58,32 @@ public class UserDAO {
         return users;
     }
     
+    public List<User> searchUser(String keyword) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT u.*, v.TenVaiTro FROM NguoiDung u " +
+                     "JOIN VaiTro v ON u.MaVaiTro = v.MaVaiTro " +
+                     "WHERE u.TenDangNhap LIKE ? OR u.HoTen LIKE ? OR u.Email LIKE ? " +
+                     "ORDER BY u.NgayTao DESC";
+        
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    users.add(mapUser(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+    
     public boolean insertUser(User user) {
         String sql = "INSERT INTO NguoiDung (TenDangNhap, MatKhau, HoTen, Email, SoDienThoai, MaVaiTro, DangHoatDong) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
