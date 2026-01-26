@@ -29,6 +29,14 @@ public class PenaltyService {
         return penaltyDAO.getAllPenalties();
     }
     
+    /**
+     * Tạo phiếu phạt mới
+     * @param maDocGia Mã độc giả bị phạt
+     * @param lyDo Lý do phạt (ví dụ: "Trả trễ 5 ngày", "Sách hư hỏng")
+     * @param soTien Số tiền phạt (VNĐ)
+     * @return true nếu tầo phiếu thành công, false nếu thất bại
+     * Xử lý: Tạo Penalty object, INSERT INTO PhieuPhat, ghi log audit
+     */
     public boolean createPenalty(int maDocGia, String lyDo, double soTien) {
         Penalty p = new Penalty();
         p.setMaDocGia(maDocGia);
@@ -52,6 +60,12 @@ public class PenaltyService {
         return result;
     }
     
+    /**
+     * Ghi nhận đóng tiền phạt
+     * @param penaltyId Mã phiếu phạt
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     * Xử lý: UPDATE PhieuPhat SET DaDongTien = 1 WHERE MaPhieuPhat = ?, ghi log
+     */
     public boolean payPenalty(int penaltyId) {
         boolean result = penaltyDAO.updateStatus(penaltyId, true);
         
@@ -67,6 +81,12 @@ public class PenaltyService {
         return result;
     }
     
+    /**
+     * Tính tổng tiền phạt chưa đóng của một độc giả
+     * @param maDocGia Mã độc giả
+     * @return Tổng số tiền phạt chưa thanh toán (VNĐ)
+     * Xử lý: SUM(SoTien) FROM PhieuPhat WHERE MaDocGia = ? AND DaDongTien = 0
+     */
     public double getTotalUnpaidPenalty(int maDocGia) {
         return penaltyDAO.getTotalUnpaidPenalty(maDocGia);
     }

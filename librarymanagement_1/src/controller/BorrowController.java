@@ -46,6 +46,10 @@ public class BorrowController {
         initEvents();
     }
     
+    /**
+     * Khởi tạo giao diện ban đầu
+     * Xử lý: Khởi tạo cart (ArrayList), tạo table model, set hạn trả mặc định = hôm nay + 14 ngày
+     */
     private void initView() {
         // Disable auto fields
         view.getTxtHanTra().setEditable(false);
@@ -72,6 +76,10 @@ public class BorrowController {
         view.getBtnReturn().addActionListener(e -> returnBook());
     }
     
+    /**
+     * Set hạn trả mặc định
+     * Xử lý: Tính ngày hiện tại + 14 ngày (DEFAULT_BORROW_DAYS), format dd/MM/yyyy, đưa vào txtDueDate
+     */
     private void setDefaultDueDate() {
         java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.add(java.util.Calendar.DAY_OF_MONTH, util.Constants.DEFAULT_BORROW_DAYS); // 14 days
@@ -79,6 +87,16 @@ public class BorrowController {
         view.getTxtHanTra().setText(sdf.format(cal.getTime()));
     }
     
+    /**
+     * Xử lý trả sách
+     * Không có tham số (lấy barcode từ txtBarcode)
+     * Xử lý:
+     * 1. Validate barcode không rỗng
+     * 2. Gọi BorrowService.returnBook(barcode)
+     * 3. Service sẽ: cập nhật trạng thái sách, tính phạt trễ hạn (nếu có)
+     * 4. Hiển thị thông báo kết quả (kèm tiền phạt nếu có)
+     * 5. Clear form
+     */
     private void returnBook() {
         String barcode = view.getTxtMaSach().getText().trim();
         if (barcode.isEmpty()) {

@@ -28,7 +28,7 @@ public class ValidateUtil {
     /**
      * Kiểm tra chuỗi có rỗng hoặc null không
      * @param str Chuỗi cần kiểm tra
-     * @return true nếu rỗng hoặc null
+     * @return true nếu rỗng hoặc null, false nếu có nội dung
      */
     public static boolean isEmpty(String str) {
         return str == null || str.trim().isEmpty();

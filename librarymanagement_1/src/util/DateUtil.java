@@ -20,9 +20,10 @@ public class DateUtil {
     private static final SimpleDateFormat DATETIME_FORMATTER = new SimpleDateFormat(Constants.DATETIME_FORMAT);
     
     /**
-     * Chuyển đổi String sang Date theo định dạng dd/MM/yyyy
-     * @param dateString Chuỗi ngày tháng
-     * @return Date hoặc null nếu parse lỗi
+     * Chuyển đổi chuỗi sang Date theo định dạng dd/MM/yyyy
+     * @param dateString Chuỗi ngày tháng (ví dụ: "25/01/2026")
+     * @return Date object nếu parse thành công, null nếu có lỗi
+     * Xử lý: Sử dụng SimpleDateFormat với pattern dd/MM/yyyy
      */
     public static Date parseDate(String dateString) {
         if (dateString == null || dateString.trim().isEmpty()) {
@@ -37,9 +38,10 @@ public class DateUtil {
     }
     
     /**
-     * Chuyển đổi Date sang String theo định dạng dd/MM/yyyy
-     * @param date Đối tượng Date
-     * @return Chuỗi ngày tháng hoặc chuỗi rỗng nếu date là null
+     * Chuyển đổi Date sang chuỗi theo định dạng dd/MM/yyyy
+     * @param date Đối tượng Date cần format
+     * @return Chuỗi ngày tháng dạng "dd/MM/yyyy", chuỗi rỗng nếu date = null
+     * Xử lý: Sử dụng SimpleDateFormat.format()
      */
     public static String formatDate(Date date) {
         if (date == null) {

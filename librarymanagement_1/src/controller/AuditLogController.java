@@ -41,7 +41,6 @@ public class AuditLogController {
         view.getBtnRefresh().addActionListener(e -> loadData());
         view.getBtnFilter().addActionListener(e -> filterData());
         view.getBtnSearch().addActionListener(e -> performSearch());
-        view.getBtnExport().addActionListener(e -> exportData());
     }
     
     private void loadUsers() {
@@ -126,13 +125,5 @@ public class AuditLogController {
         }
         
         displayLogs(searchResults);
-    }
-    
-    private void exportData() {
-        JOptionPane.showMessageDialog(view,
-            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
-            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
-            "Thông báo",
-            JOptionPane.INFORMATION_MESSAGE);
     }
 }

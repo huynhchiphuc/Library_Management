@@ -4,12 +4,13 @@
  */
 package controller;
 
-import dao.RoleDAO;
-import dao.UserDAO;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import dao.UserDAO;
 import model.User;
 import util.Constants;
 import util.PasswordUtil;
@@ -50,6 +51,17 @@ public class UserController {
         });
     }
     
+    /**
+     * Xử lý tìm kiếm người dùng
+     * Không có tham số đầu vào (lấy keyword từ txtSearch)
+     * Không có giá trị trả về (cập nhật JTable trực tiếp)
+     * Xử lý:
+     * 1. Lấy keyword từ txtSearch.getText()
+     * 2. Validate keyword không rỗng
+     * 3. Gọi userDAO.searchUser(keyword)
+     * 4. Hiển thị kết quả lên JTable
+     * 5. Cập nhật lblResultCount: "Tổng: X kết quả"
+     */
     private void searchUser() {
         String keyword = view.getTxtSearch().getText().trim();
         if (keyword.isEmpty()) {
@@ -78,6 +90,17 @@ public class UserController {
         view.getLblResultCount().setText("Tổng: " + users.size() + " kết quả");
     }
     
+    /**
+     * Load danh sách người dùng lên bảng
+     * Không có tham số đầu vào
+     * Không có giá trị trả về
+     * Xử lý:
+     * 1. Gọi userDAO.getAllUsers() lấy danh sách tất cả user
+     * 2. Clear JTable (setRowCount(0))
+     * 3. Duyệt qua List<User>, thêm từng dòng vào JTable
+     * 4. Format: Mã ND, Tên ĐN, Họ tên, Email, SĐT, Vai trò, Trạng thái, Ngày tạo
+     * 5. Cập nhật lblResultCount: "Tổng: X kết quả"
+     */
     private void loadData() {
         List<User> users = userDAO.getAllUsers();
         DefaultTableModel model = (DefaultTableModel) view.getTblUser().getModel();
@@ -124,6 +147,20 @@ public class UserController {
         }
     }
     
+    /**
+     * Xử lý thêm người dùng mới
+     * Không có tham số đầu vào (lấy dữ liệu từ form)
+     * Không có giá trị trả về (hiển thị thông báo qua JOptionPane)
+     * Xử lý:
+     * 1. Validate input: username, password, fullName không được rỗng
+     * 2. Validate email hợp lệ (nếu có nhập)
+     * 3. Kiểm tra username đã tồn tại chưa (gọi userDAO.isUsernameExist)
+     * 4. Hash password (gọi PasswordUtil.hashPassword)
+     * 5. Tạo User object và set các thuộc tính
+     * 6. Gọi userDAO.insertUser() để thêm vào database
+     * 7. Nếu thành công: refresh bảng, clear form, hiển thị thông báo
+     * 8. Nếu thất bại: hiển thị thông báo lỗi
+     */
     private void addUser() {
         String username = view.getTxtTenDangNhap().getText().trim();
         String password = new String(view.getTxtMatKhau().getPassword()).trim();
@@ -182,6 +219,19 @@ public class UserController {
         }
     }
     
+    /**
+     * Xử lý cập nhật thông tin người dùng
+     * Không có tham số đầu vào (lấy dữ liệu từ form)
+     * Không có giá trị trả về (hiển thị thông báo qua JOptionPane)
+     * Xử lý:
+     * 1. Kiểm tra đã chọn user chưa (MaNguoiDung != rỗng)
+     * 2. Validate: fullName, email, roleId
+     * 3. Lấy User cũ từ database
+     * 4. Cập nhật các thuộc tính mới (không cập nhật password ở đây)
+     * 5. Gọi userDAO.updateUser()
+     * 6. Nếu thành công: refresh bảng, clear form
+     * 7. Nếu thất bại: hiển thị thông báo lỗi
+     */
     private void updateUser() {
         String userId = view.getTxtMaNguoiDung().getText().trim();
         if (userId.isEmpty()) {

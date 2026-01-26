@@ -164,10 +164,23 @@ public class MainController {
             return;
         }
         
-        if (auditLogForm == null) {
-            auditLogForm = new AuditLogForm();
+        try {
+            System.out.println("DEBUG: Bắt đầu tạo AuditLogForm...");
+            if (auditLogForm == null) {
+                auditLogForm = new AuditLogForm();
+                System.out.println("DEBUG: AuditLogForm đã được tạo thành công!");
+            }
+            System.out.println("DEBUG: Gọi showPanel...");
+            showPanel(auditLogForm);
+            System.out.println("DEBUG: showPanel hoàn tất!");
+        } catch (Exception ex) {
+            System.err.println("LỖI khi tạo AuditLogForm:");
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(view, 
+                "Lỗi khi mở nhật ký: " + ex.getMessage(), 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
         }
-        showPanel(auditLogForm);
     }
     
     private void logout() {

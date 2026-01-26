@@ -23,6 +23,17 @@ public class AuthService {
         this.auditService = new AuditService();
     }
     
+    /**
+     * Xác thực đăng nhập người dùng
+     * @param username Tên đăng nhập
+     * @param password Mật khẩu chưa mã hóa (plain text)
+     * @return true nếu đăng nhập thành công, false nếu thất bại
+     * Xử lý: 
+     * 1. Lấy User từ database theo username
+     * 2. So sánh password với password đã hash trong DB (dùng PasswordUtil)
+     * 3. Nếu đúng: lưu currentUser và ghi log đăng nhập
+     * 4. Trả về true/false
+     */
     public boolean login(String username, String password) {
         User user = userDAO.getUserByUsername(username);
         
@@ -48,6 +59,10 @@ public class AuthService {
         return false;
     }
     
+    /**
+     * Đăng xuất người dùng hiện tại
+     * Xử lý: Ghi log đăng xuất và set currentUser = null
+     */
     public void logout() {
         if (currentUser != null) {
             // Log logout
@@ -57,10 +72,18 @@ public class AuthService {
         currentUser = null;
     }
     
+    /**
+     * Lấy thông tin người dùng đang đăng nhập
+     * @return User object của người dùng hiện tại, null nếu chưa đăng nhập
+     */
     public static User getCurrentUser() {
         return currentUser;
     }
     
+    /**
+     * Kiểm tra có người dùng đang đăng nhập hay không
+     * @return true nếu có user đang đăng nhập, false nếu chưa
+     */
     public static boolean isLoggedIn() {
         return currentUser != null;
     }

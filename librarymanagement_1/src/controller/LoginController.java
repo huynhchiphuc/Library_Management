@@ -38,6 +38,20 @@ public class LoginController {
         view.getTxtPassword().addActionListener(e -> login());
     }
     
+    /**
+     * Xử lý đăng nhập
+     * Không có tham số (lấy username/password từ form)
+     * Xử lý:
+     * 1. Lấy username và password từ các trường nhập liệu
+     * 2. Validate không được rỗng
+     * 3. Gọi AuthService.login(username, password)
+     * 4. Nếu thành công:
+     *    - Kiểm tra user có bị vô hiệu hóa không
+     *    - Ghi log audit đăng nhập
+     *    - Mở MainForm và truyền thông tin user
+     *    - Đóng LoginForm
+     * 5. Nếu thất bại: hiển thị thông báo lỗi
+     */
     private void login() {
         String username = view.getTxtUsername().getText().trim();
         String password = new String(view.getTxtPassword().getPassword());
@@ -119,6 +133,10 @@ public class LoginController {
         });
     }
     
+    /**
+     * Thoát ứng dụng
+     * Xử lý: Hiển thị dialog xác nhận, nếu đồng ý thì gọi System.exit(0)
+     */
     private void exitApplication() {
         int confirm = JOptionPane.showConfirmDialog(view,
             "Bạn có chắc muốn thoát ứng dụng?",

@@ -13,6 +13,12 @@ import java.security.NoSuchAlgorithmException;
  */
 public class PasswordUtil {
     
+    /**
+     * Mã hóa mật khẩu bằng thuật toán SHA-256
+     * @param password Mật khẩu dạng plain text
+     * @return Chuỗi mật khẩu đã được hash dạng hex (64 ký tự)
+     * Xử lý: Sử dụng MessageDigest SHA-256, convert byte[] sang hex string
+     */
     public static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -31,6 +37,13 @@ public class PasswordUtil {
         }
     }
     
+    /**
+     * So sánh mật khẩu plain text với mật khẩu đã hash
+     * @param password Mật khẩu dạng plain text (người dùng nhập)
+     * @param hashedPassword Mật khẩu đã hash trong database
+     * @return true nếu khớp, false nếu không khớp
+     * Xử lý: Hash password rồi so sánh string với hashedPassword
+     */
     public static boolean checkPassword(String password, String hashedPassword) {
         return hashPassword(password).equals(hashedPassword);
     }

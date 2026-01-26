@@ -1314,7 +1314,6 @@ Hệ thống Quản lý Thư viện được xây dựng hoàn chỉnh với đ�
 
 ### Hướng phát triển:
 - Thêm chức năng in phiếu mượn, phiếu phạt
-- Xuất báo cáo ra Excel/PDF
 - Thêm biểu đồ thống kê trực quan
 - Tích hợp máy quét mã vạch
 - Gửi email thông báo sắp đến hạn trả sách

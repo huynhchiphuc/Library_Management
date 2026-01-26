@@ -15,6 +15,11 @@ import util.DBConnection;
 
 public class CategoryDAO {
     
+    /**
+     * Lấy danh sách tất cả thể loại sách
+     * @return List<Category> danh sách thể loại sắp xếp theo MaTheLoai giảm dần
+     * Xử lý: SELECT * FROM TheLoai ORDER BY MaTheLoai DESC
+     */
     public List<Category> getAllCategories() {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM TheLoai ORDER BY MaTheLoai DESC";

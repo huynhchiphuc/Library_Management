@@ -36,6 +36,10 @@ public class ReaderController {
         initController();
     }
     
+    /**
+     * Khởi tạo giao diện ban đầu
+     * Xử lý: Load danh sách độc giả, set MaThe = "(Tự động)", disable field MaThe
+     */
     private void initView() {
         // Disable auto-generated fields
         view.getTxtMaThe().setEditable(false);
@@ -69,6 +73,12 @@ public class ReaderController {
         displayReaders(list);
     }
     
+    /**
+     * Hiển thị danh sách độc giả lên JTable
+     * @param list Danh sách Reader cần hiển thị
+     * Xử lý: Clear bảng, duyệt List<Reader>, format ngày dd/MM/yyyy,
+     *        hiển thị trạng thái "Hoạt động"/"Khóa", highlight dòng nếu hết hạn/bị khóa
+     */
     private void displayReaders(List<Reader> list) {
         DefaultTableModel model = (DefaultTableModel) view.getTblReader().getModel();
         model.setRowCount(0);

@@ -50,7 +50,7 @@ public class HomeForm extends javax.swing.JPanel {
         javax.swing.JPanel pnlCard3 = createStatCard("📖 ĐANG MƯỢN", new java.awt.Color(52, 152, 219));
         lblBorrowingCount = new javax.swing.JLabel("0");
         
-        javax.swing.JPanel pnlCard4 = createStatCard("💰 PHẠT CHƯA ĐÃ", new java.awt.Color(155, 89, 182));
+        javax.swing.JPanel pnlCard4 = createStatCard("💰 PHẠT CHƯA ĐÓNG", new java.awt.Color(155, 89, 182));
         lblUnpaidPenalty = new javax.swing.JLabel("0đ");
         
         // Add labels to cards

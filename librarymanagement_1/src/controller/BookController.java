@@ -35,6 +35,10 @@ public class BookController {
         initController();
     }
     
+    /**
+     * Khởi tạo giao diện ban đầu
+     * Xử lý: Load danh sách thể loại vào ComboBox, load dữ liệu sách vào bảng
+     */
     private void initView() {
         loadCategories();
         loadTableData(bookDAO.getAllBooks());
@@ -48,6 +52,11 @@ public class BookController {
         view.getTxtBarcodes().setBackground(new java.awt.Color(240, 240, 240));
     }
     
+    /**
+     * Khởi tạo event handlers cho các nút và components
+     * Xử lý: Gắn ActionListener cho các button (Thêm, Sửa, Xóa, Reset, Tìm kiếm)
+     *        và MouseListener cho JTable để fill form khi click chọn dòng
+     */
     private void initController() {
         view.getBtnAdd().addActionListener(e -> addBook());
         view.getBtnEdit().addActionListener(e -> updateBook());
@@ -74,6 +83,10 @@ public class BookController {
         updateButtonStates(false);
     }
     
+    /**
+     * Load danh sách thể loại vào ComboBox
+     * Xử lý: Lấy danh sách từ CategoryDAO, thêm vào ComboBox model
+     */
     private void loadCategories() {
         List<Category> categories = categoryDAO.getAllCategories();
         DefaultComboBoxModel<Category> model = new DefaultComboBoxModel<>();
@@ -86,6 +99,12 @@ public class BookController {
         cbo.setModel(model);
     }
     
+    /**
+     * Hiển thị danh sách sách lên JTable
+     * @param books Danh sách Book cần hiển thị
+     * Xử lý: Clear bảng, duyệt List<Book>, thêm từng dòng với format:
+     *        Mã sách, Tựa đề, Tác giả, NXB, Năm XB, Thể loại, Số lượng, Giá
+     */
     private void loadTableData(List<Book> books) {
         DefaultTableModel model = (DefaultTableModel) view.getTblBook().getModel();
         model.setColumnIdentifiers(new Object[]{"Mã", "Tựa đề", "Tác giả", "Thể loại", "NXB", "Năm XB", "Giá tiền", "Số lượng", "Mô tả"});

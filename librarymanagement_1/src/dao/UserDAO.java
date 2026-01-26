@@ -20,6 +20,12 @@ import util.DBConnection;
  */
 public class UserDAO {
     
+    /**
+     * Lấy thông tin người dùng theo tên đăng nhập
+     * @param username Tên đăng nhập cần tìm
+     * @return User object nếu tìm thấy và đang hoạt động, null nếu không tìm thấy
+     * Xử lý: Truy vấn database bảng NguoiDung với điều kiện TenDangNhap = ? AND DangHoatDong = 1
+     */
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM NguoiDung WHERE TenDangNhap = ? AND DangHoatDong = 1";
         
@@ -39,6 +45,11 @@ public class UserDAO {
         return null;
     }
     
+    /**
+     * Lấy danh sách tất cả người dùng trong hệ thống
+     * @return List<User> danh sách người dùng kèm thông tin vai trò (JOIN với bảng VaiTro)
+     * Xử lý: Truy vấn SELECT u.*, v.TenVaiTro FROM NguoiDung u JOIN VaiTro v, sắp xếp theo NgayTao giảm dần
+     */
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT u.*, v.TenVaiTro FROM NguoiDung u " +
@@ -58,6 +69,12 @@ public class UserDAO {
         return users;
     }
     
+    /**
+     * Tìm kiếm người dùng theo từ khóa
+     * @param keyword Từ khóa tìm kiếm (tên đăng nhập, họ tên hoặc email)
+     * @return List<User> danh sách người dùng khớp với từ khóa
+     * Xử lý: Truy vấn với LIKE %keyword% trên 3 trường: TenDangNhap, HoTen, Email
+     */
     public List<User> searchUser(String keyword) {
         List<User> users = new ArrayList<>();
         String sql = "SELECT u.*, v.TenVaiTro FROM NguoiDung u " +
@@ -84,6 +101,12 @@ public class UserDAO {
         return users;
     }
     
+    /**
+     * Thêm người dùng mới vào hệ thống
+     * @param user Đối tượng User chứa thông tin cần thêm (username, password đã hash, fullName, email, phone, roleId, isActive)
+     * @return true nếu thêm thành công, false nếu thất bại
+     * Xử lý: INSERT INTO NguoiDung các trường thông tin, NgayTao tự động = CURRENT_TIMESTAMP
+     */
     public boolean insertUser(User user) {
         String sql = "INSERT INTO NguoiDung (TenDangNhap, MatKhau, HoTen, Email, SoDienThoai, MaVaiTro, DangHoatDong) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -106,6 +129,12 @@ public class UserDAO {
         return false;
     }
     
+    /**
+     * Cập nhật thông tin người dùng (không bao gồm mật khẩu)
+     * @param user Đối tượng User chứa thông tin cần cập nhật (id bắt buộc)
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     * Xử lý: UPDATE NguoiDung SET HoTen, Email, SoDienThoai, MaVaiTro, DangHoatDong WHERE MaNguoiDung = ?
+     */
     public boolean updateUser(User user) {
         String sql = "UPDATE NguoiDung SET HoTen = ?, Email = ?, SoDienThoai = ?, " +
                      "MaVaiTro = ?, DangHoatDong = ? WHERE MaNguoiDung = ?";
@@ -127,6 +156,12 @@ public class UserDAO {
         return false;
     }
     
+    /**
+     * Xóa người dùng (xóa mềm: set DangHoatDong = 0)
+     * @param userId Mã người dùng cần xóa
+     * @return true nếu xóa thành công, false nếu thất bại
+     * Xử lý: UPDATE NguoiDung SET DangHoatDong = 0 WHERE MaNguoiDung = ?
+     */
     public boolean deleteUser(int userId) {
         String sql = "UPDATE NguoiDung SET DangHoatDong = 0 WHERE MaNguoiDung = ?";
         
@@ -157,6 +192,13 @@ public class UserDAO {
         return false;
     }
     
+    /**
+     * Reset mật khẩu người dùng
+     * @param userId Mã người dùng
+     * @param newHashedPassword Mật khẩu mới đã được hash (SHA-256)
+     * @return true nếu reset thành công, false nếu thất bại
+     * Xử lý: UPDATE NguoiDung SET MatKhau = ? WHERE MaNguoiDung = ?
+     */
     public boolean resetPassword(int userId, String newHashedPassword) {
         String sql = "UPDATE NguoiDung SET MatKhau = ? WHERE MaNguoiDung = ?";
         

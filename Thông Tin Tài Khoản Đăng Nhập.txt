@@ -1,0 +1,10 @@
+Tài khoản của Admin
+username: admin
+password: admin123
+
+
+Tài khoản của Thủ Thư
+username: thuthu1
+password: thuthu123
+
+Sử dụng Database MySQL

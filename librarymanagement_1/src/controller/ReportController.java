@@ -33,11 +33,6 @@ public class ReportController {
     private void initEvents() {
         // Refresh event
         view.getBtnRefresh().addActionListener(e -> refreshData());
-        
-        // Export events
-        view.getBtnExportRecent().addActionListener(e -> exportRecent());
-        view.getBtnExportTop().addActionListener(e -> exportTopReaders());
-        view.getBtnExportBorrowing().addActionListener(e -> exportBorrowing());
     }
     
     private void refreshData() {
@@ -112,27 +107,4 @@ public class ReportController {
         }
     }
     
-    private void exportRecent() {
-        javax.swing.JOptionPane.showMessageDialog(view,
-            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
-            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
-            "Thông báo",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    private void exportTopReaders() {
-        javax.swing.JOptionPane.showMessageDialog(view,
-            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
-            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
-            "Thông báo",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    private void exportBorrowing() {
-        javax.swing.JOptionPane.showMessageDialog(view,
-            "Chức năng xuất Excel sẽ được triển khai sau.\n" +
-            "Hiện tại bạn có thể sao chép dữ liệu từ bảng.",
-            "Thông báo",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
 }

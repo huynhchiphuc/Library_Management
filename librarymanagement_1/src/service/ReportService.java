@@ -19,8 +19,10 @@ public class ReportService {
     public ReportService() {
         reportDAO = new ReportDAO();
     }
-    
-    public int getTotalBooks() {
+        /**
+     * Đếm tổng số đầu sách
+     * @return Số lượng đầu sách (bảng DauSach)
+     */    public int getTotalBooks() {
         return reportDAO.countTotalBookCopies();
     }
     
@@ -32,10 +34,20 @@ public class ReportService {
         return reportDAO.countBorrowedBooks();
     }
     
+    /**
+     * Đếm số phiếu mượn quá hạn
+     * @return Số lượng phiếu mượn có HanTra < ngày hiện tại và chưa trả
+     * Xử lý: Đếm số bản ghi trong ChiTietMuonTra có NgayTra IS NULL và HanTra < CURDATE()
+     */
     public int getOverdueCount() {
         return reportDAO.countOverdueBorrows();
     }
     
+    /**
+     * Lấy danh sách top độc giả mượn sách nhiều nhất
+     * @return List<Object[]> mỗi phần tử chứa: [Họ tên, Số lần mượn]
+     * Xử lý: GROUP BY độc giả, đếm số phiếu mượn, ORDER BY giảm dần, LIMIT 5
+     */
     public List<Object[]> getTopReaders() {
         return reportDAO.getTopReaders(10);
     }

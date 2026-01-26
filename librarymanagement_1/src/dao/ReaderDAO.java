@@ -19,6 +19,11 @@ import util.DBConnection;
  */
 public class ReaderDAO {
     
+    /**
+     * Lấy danh sách tất cả độc giả
+     * @return List<Reader> danh sách độc giả sắp xếp theo MaDocGia giảm dần
+     * Xử lý: SELECT * FROM DocGia ORDER BY MaDocGia DESC
+     */
     public List<Reader> getAllReaders() {
         List<Reader> list = new ArrayList<>();
         String sql = "SELECT * FROM DocGia";
@@ -45,6 +50,12 @@ public class ReaderDAO {
         return list;
     }
     
+    /**
+     * Thêm độc giả mới
+     * @param r Đối tượng Reader chứa thông tin độc giả
+     * @return true nếu thêm thành công, false nếu thất bại
+     * Xử lý: INSERT INTO DocGia với tất cả thông tin, DiemViPham mặc định = 0, BiKhoa = 0
+     */
     public boolean addReader(Reader r) {
         String sql = "INSERT INTO DocGia(MaThe, HoTen, Email, SoDienThoai, DiaChi, NgayHetHan, BiKhoa) VALUES(?,?,?,?,?,?,?)";
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -138,6 +149,12 @@ public class ReaderDAO {
         return false;
     }
 
+    /**
+     * Lấy thông tin độc giả theo mã thẻ
+     * @param maThe Mã thẻ độc giả
+     * @return Reader object nếu tìm thấy, null nếu không tìm thấy
+     * Xử lý: SELECT * FROM DocGia WHERE MaThe = ?
+     */
     public Reader getReaderByCardId(String maThe) {
         String sql = "SELECT * FROM DocGia WHERE MaThe = ?";
         try (Connection conn = DBConnection.getInstance().getConnection();

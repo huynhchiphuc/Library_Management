@@ -83,7 +83,6 @@ public class AuditLogForm extends javax.swing.JPanel {
         
         txtSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton("Tìm kiếm");
-        btnExport = new javax.swing.JButton("Xuất Excel");
         lblResultCount = new javax.swing.JLabel("Tổng: 0 bản ghi");
         
         // --- TABLE ---
@@ -177,10 +176,6 @@ public class AuditLogForm extends javax.swing.JPanel {
         btnSearch.setForeground(java.awt.Color.WHITE);
         btnSearch.setFocusPainted(false);
         pnlBottom.add(btnSearch);
-        btnExport.setBackground(new java.awt.Color(39, 174, 96));
-        btnExport.setForeground(java.awt.Color.WHITE);
-        btnExport.setFocusPainted(false);
-        pnlBottom.add(btnExport);
         lblResultCount.setFont(new java.awt.Font("Segoe UI", 1, 12));
         pnlBottom.add(lblResultCount);
         pnlCenter.add(pnlBottom, java.awt.BorderLayout.SOUTH);
@@ -192,7 +187,6 @@ public class AuditLogForm extends javax.swing.JPanel {
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnExport;
     private javax.swing.JComboBox<String> cboAction;
     private javax.swing.JComboBox<String> cboTable;
     private javax.swing.JComboBox<String> cboUser;
@@ -205,7 +199,6 @@ public class AuditLogForm extends javax.swing.JPanel {
     public javax.swing.JButton getBtnFilter() { return btnFilter; }
     public javax.swing.JButton getBtnRefresh() { return btnRefresh; }
     public javax.swing.JButton getBtnSearch() { return btnSearch; }
-    public javax.swing.JButton getBtnExport() { return btnExport; }
     public javax.swing.JComboBox<String> getCboAction() { return cboAction; }
     public javax.swing.JComboBox<String> getCboTable() { return cboTable; }
     public javax.swing.JComboBox<String> getCboUser() { return cboUser; }

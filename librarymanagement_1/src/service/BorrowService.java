@@ -39,6 +39,20 @@ public class BorrowService {
         auditService = new AuditService();
     }
     
+    /**
+     * Xử lý mượn sách cho độc giả
+     * @param maDocGia Mã độc giả mượn sách
+     * @param books Danh sách các cuốn sách (BookCopy) cần mượn
+     * @param hanTra Hạn trả sách
+     * @return true nếu tạo phiếu mượn thành công, false nếu thất bại
+     * Xử lý (Transaction):
+     * 1. Tạo PhieuMuon mới (INSERT INTO PhieuMuon)
+     * 2. Với mỗi cuốn sách:
+     *    - Tạo ChiTietMuonTra (INSERT INTO ChiTietMuonTra)
+     *    - Cập nhật TrangThai sách = 2 (đang mượn) (UPDATE CuonSach)
+     * 3. Ghi log audit
+     * 4. Commit transaction nếu thành công, rollback nếu có lỗi
+     */
     public boolean borrowBooks(int maDocGia, List<BookCopy> books, Date hanTra) {
         // 1. Create Borrow Slip
         BorrowSlip slip = new BorrowSlip();
@@ -83,6 +97,21 @@ public class BorrowService {
         return success;
     }
 
+    /**
+     * Xử lý trả sách
+     * @param barcode Mã vạch của cuốn sách cần trả
+     * @return Chuỗi thông báo kết quả ("Trả sách thành công" hoặc "Trả sách thành công. Tiền phạt: XXX đồng")
+     * Xử lý:
+     * 1. Lấy thông tin cuốn sách từ mã vạch
+     * 2. Kiểm tra sách có đang được mượn không (TrangThai = 2)
+     * 3. Lấy thông tin chi tiết mượn trả (BorrowDetail) chưa trả
+     * 4. Cập nhật NgayTra = NOW(), TinhTrangTra trong ChiTietMuonTra
+     * 5. Cập nhật TrangThai sách = 1 (có sẵn)
+     * 6. Tính số ngày trễ hạn: ngayTra > hanTra?
+     * 7. Nếu trễ hạn: tạo PhieuPhat (INSERT INTO PhieuPhat) với số tiền = số ngày trễ * 5000đ
+     * 8. Ghi log audit
+     * 9. Trả về thông báo kèm số tiền phạt (nếu có)
+     */
     public String returnBook(String barcode) {
         // 1. Find book
         BookCopy book = bookCopyDAO.getBookCopyByBarcode(barcode);

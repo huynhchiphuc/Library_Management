@@ -15,6 +15,11 @@ import util.DBConnection;
 
 public class BookDAO {
     
+    /**
+     * Lấy danh sách tất cả đầu sách
+     * @return List<Book> danh sách đầu sách kèm thông tin thể loại và số lượng cuốn sách
+     * Xử lý: JOIN DauSach với TheLoai, đếm số lượng CuonSach có TrangThai = 1 (có sẵn)
+     */
     public List<Book> getAllBooks() {
         List<Book> list = new ArrayList<>();
         // Join with TheLoai and CuonSach to get aggregated data
@@ -48,6 +53,12 @@ public class BookDAO {
         return list;
     }
 
+    /**
+     * Thêm đầu sách mới vào database
+     * @param b Đối tượng Book chứa thông tin đầu sách
+     * @return ID của đầu sách vừa thêm, -1 nếu thất bại
+     * Xử lý: INSERT INTO DauSach, sử dụng RETURN_GENERATED_KEYS để lấy ID tự động tăng
+     */
     public int insertBook(Book b) {
         String sql = "INSERT INTO DauSach(TuaDe, TacGia, NhaXuatBan, NamXuatBan, MaTheLoai, MoTa) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -151,6 +162,12 @@ public class BookDAO {
         }
     }
     
+    /**
+     * Tìm kiếm sách theo từ khóa
+     * @param keyword Từ khóa tìm kiếm
+     * @return List<Book> danh sách sách khớp với từ khóa
+     * Xử lý: Tìm kiếm LIKE %keyword% trên các trường: TuaDe, TacGia, NhaXuatBan, TenTheLoai
+     */
     public List<Book> searchBooks(String keyword) {
         List<Book> list = new ArrayList<>();
         String sql = "SELECT b.*, c.TenTheLoai, COUNT(cs.MaCuonSach) as SoLuong, MAX(cs.GiaTien) as GiaTien " +
